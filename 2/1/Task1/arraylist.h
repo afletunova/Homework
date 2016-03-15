@@ -11,6 +11,6 @@ public:
     ~ArrayList();
 private:
     static int const maxArraySize = 256;
-    int *array = new int[maxArraySize];
-    int size = 0;
+    int *array;
+    int size;
 };

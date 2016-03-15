@@ -19,24 +19,28 @@ private slots:
     {
         list = new ArrayList;
         QVERIFY(list->getSize() == 0);
+        delete list;
     }
 
     void testEmptyPointerList()
     {
         list = new ListPointer;
         QVERIFY(list->getSize() == 0);
+        delete list;
     }
 
     void testAddSingleElementToArrayList()
     {
         list = new ArrayList;
         list->addElementToList(5);
+        delete list;
     }
 
     void testAddSingleElementToPointerList()
     {
         list = new ListPointer;
         list->addElementToList(5);
+        delete list;
     }
 
     void testChangeSizeByAddSingleElementToArrayList()
@@ -44,6 +48,7 @@ private slots:
         list = new ArrayList;
         list->addElementToList(5);
         QVERIFY(list->getSize() == 1);
+        delete list;
     }
 
     void testChangeSizeByAddSingleElementToPointerList()
@@ -51,6 +56,7 @@ private slots:
        list = new ListPointer;
        list->addElementToList(5);
        QVERIFY(list->getSize() == 1);
+       delete list;
     }
 
     void testAddMoreThanOneElementToArrayList()
@@ -62,6 +68,7 @@ private slots:
             list->addElementToList(i);
         }
         QVERIFY(list->getSize() == n);
+        delete list;
     }
 
     void testAddMoreThanOneElementToPointerList()
@@ -73,6 +80,7 @@ private slots:
             list->addElementToList(i);
         }
         QVERIFY(list->getSize() == n);
+        delete list;
     }
 
     void testRemoveElementFromEmptyArrayList()
@@ -80,6 +88,7 @@ private slots:
         list = new ArrayList;
         list->removeElementFromList(5);
         QVERIFY(list->getSize() == 0);
+        delete list;
     }
 
     void testRemoveElementFromEmptyPointerList()
@@ -87,6 +96,7 @@ private slots:
         list = new ListPointer;
         list->removeElementFromList(5);
         QVERIFY(list->getSize() == 0);
+        delete list;
     }
 
     void testRemoveRandomElementFromArrayList()
@@ -99,6 +109,7 @@ private slots:
         }
         list->removeElementFromList(n/2);
         QVERIFY(list->getSize() == (n-1));
+        delete list;
     }
 
     void testRemoveRandomElementFromPointerList()
@@ -111,6 +122,7 @@ private slots:
         }
         list->removeElementFromList(n/2);
         QVERIFY(list->getSize() == (n-1));
+        delete list;
     }
 
     void testRemoveFirstElementFromArrayList()
@@ -123,6 +135,7 @@ private slots:
         }
         list->removeElementFromList(0);
         QVERIFY(list->getSize() == (n-1));
+        delete list;
     }
 
     void testRemoveFirstElementFromPointerList()
@@ -135,6 +148,7 @@ private slots:
         }
         list->removeElementFromList(0);
         QVERIFY(list->getSize() == (n-1));
+        delete list;
     }
 
     void testRemoveLastElementFromArrayList()
@@ -147,6 +161,7 @@ private slots:
         }
         list->removeElementFromList(n-1);
         QVERIFY(list->getSize() == (n-1));
+        delete list;
     }
 
     void testRemoveLastElementFromPointerList()
@@ -159,6 +174,7 @@ private slots:
         }
         list->removeElementFromList(n-1);
         QVERIFY(list->getSize() == (n-1));
+        delete list;
     }
 
     void testRemoveElementThatDoesNotExistFromArrayList()
@@ -171,6 +187,7 @@ private slots:
         }
         list->removeElementFromList(n);
         QVERIFY(list->getSize() == (n));
+        delete list;
     }
 
     void testRemoveElementThatDoesNotExistFromPointerList()
@@ -183,6 +200,7 @@ private slots:
         }
         list->removeElementFromList(n);
         QVERIFY(list->getSize() == (n));
+        delete list;
     }
 };
 
