@@ -14,7 +14,7 @@ bool choice(int answer, List *list)
         int value = 0;
         cout << "Enter a value to add: " << endl;
         cin >> value;
-        if (list->addElementToList(value))
+        if (list->add(value))
         {
             cout << "\n Completed successfully." << endl;
         }
@@ -29,7 +29,7 @@ bool choice(int answer, List *list)
         int value = 0;
         cout << "Enter a value to add: " << endl;
         cin >> value;
-        if (list->removeElementFromList(value))
+        if (list->remove(value))
         {
             cout << "\n Completed successfully." << endl;
         }

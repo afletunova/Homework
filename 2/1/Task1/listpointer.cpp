@@ -11,11 +11,18 @@ ListPointer::ElementOfList::ElementOfList()
 {}
 
 ListPointer::ElementOfList::ElementOfList(int value)
+    :next(nullptr), previous(nullptr)
 {
     key = value;
 }
 
-bool ListPointer::addElementToList(int value)
+ListPointer::ElementOfList::~ElementOfList()
+{
+    delete next;
+    delete previous;
+}
+
+bool ListPointer::add(int value)
 {
     ElementOfList *element = head;
     if (element)
@@ -33,7 +40,7 @@ bool ListPointer::addElementToList(int value)
     return true;
 }
 
-bool ListPointer::removeElementFromList(int value)
+bool ListPointer::remove(int value)
 {
     if (head)
     {

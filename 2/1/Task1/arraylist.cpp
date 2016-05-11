@@ -7,7 +7,7 @@ ArrayList::ArrayList()
     :size(0), array(new int[maxArraySize])
 {}
 
-bool ArrayList::addElementToList(int value)
+bool ArrayList::add(int value)
 {
     if (size < maxArraySize)
     {
@@ -20,7 +20,7 @@ bool ArrayList::addElementToList(int value)
     }
 }
 
-bool ArrayList::removeElementFromList(int value)
+bool ArrayList::remove(int value)
 {
     if (size > 0)
     {
