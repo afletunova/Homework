@@ -4,7 +4,7 @@ ArrayStack::ArrayStack()
     :size(0), array(new int[maxArraySize])
 {}
 
-bool ArrayStack::push(int value)
+bool ArrayStack::push(const int &value)
 {
     if (size < maxArraySize)
     {
