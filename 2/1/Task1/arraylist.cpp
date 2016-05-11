@@ -1,4 +1,5 @@
 #include "arraylist.h"
+#include <iostream>
 
 using namespace std;
 
@@ -23,16 +24,16 @@ bool ArrayList::removeElementFromList(int value)
 {
     if (size > 0)
     {
-        int i = 0;
-        while ((i < size) && (array[i] != value))
+        int i = 1;
+        while ((i <= size) && (array[i] != value))
         {
             ++i;
         }
         if (array[i] == value)
         {
-            for (int j = i; j < size; ++j)
+            for (int j = 0; j < size; ++j)
             {
-                array[j] = array[j + 1];
+                array[i] = array[i + 1];
             }
             --size;
             return true;

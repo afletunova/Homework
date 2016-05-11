@@ -1,5 +1,4 @@
 QT += core
-QT += testlib
 QT -= gui
 
 CONFIG += c++11
@@ -10,12 +9,14 @@ CONFIG -= app_bundle
 
 TEMPLATE = app
 
-SOURCES += \
+SOURCES += main.cpp \
     arraylist.cpp \
+    choice.cpp \
     listpointer.cpp
 
 HEADERS += \
-    list.h \
-    listpointer.h \
     arraylist.h \
-    listtest.h
+    choice.h \
+    list.h \
+    listpointer.h
+
