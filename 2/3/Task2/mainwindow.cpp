@@ -8,9 +8,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
     connect(ui->firstArgument, SIGNAL(valueChanged(int)), this, SLOT(calculator()));
     connect(ui->secondArgument, SIGNAL(valueChanged(int)), this, SLOT(calculator()));
-    connect(ui->answer, SIGNAL(valueChanged(int)), this, SLOT(calculator()));
+    connect(ui->answer, SIGNAL(currentIndexChanged(int)), this, SLOT(calculator()));
 }
 
 MainWindow::~MainWindow()
