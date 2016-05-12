@@ -36,7 +36,7 @@ int priority(char c)
     }
 }
 
-string FromInfixToPostfix(string entered)
+string FromInfixToPostfix(const string &entered)
 {
     int length = entered.length();
     string returned;
@@ -90,7 +90,7 @@ string FromInfixToPostfix(string entered)
     return returned;
 }
 
-int PostfixCalculator(string entered)
+int PostfixCalculator(const string &entered)
 {
     ArrayStack *numbers = new ArrayStack;
     int length = entered.length();
@@ -117,7 +117,7 @@ int PostfixCalculator(string entered)
     return numbers->pop();
 }
 
-int calculator(string entered)
+int calculator(const string &entered)
 {
     return PostfixCalculator(FromInfixToPostfix(entered));
 }

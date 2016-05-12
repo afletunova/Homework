@@ -3,8 +3,8 @@
 
 using namespace std;
 
-int calculator(string entered);
+int calculator(const string &entered);
 
-int PostfixCalculator(string entered);
+int PostfixCalculator(const string &entered);
 
-string FromInfixToPostfix(string entered);
+string FromInfixToPostfix(const string &entered);
