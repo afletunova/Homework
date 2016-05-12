@@ -3,18 +3,22 @@
 
 using namespace std;
 
+const int length = 32;
+
 enum {toExit, addElement, removeElement, getSizeOfArray};
 bool choice(int answer, HashTable *hashTable)
 {
+    char *word = new char[length];
+    word = "\0";
     switch(answer)
     {
     case toExit: return true;
     case addElement:
     {
-        int value = 0;
-        cout << "Enter a value to add: " << endl;
-        cin >> value;
-        if (hashTable->addElementToList(value))
+        cout << "Enter word to add: " << endl;
+        cin >> word;
+        QString qstringWord(word);
+        if (hashTable->add(qstringWord))
         {
             cout << "\n Completed successfully." << endl;
         }
@@ -26,10 +30,10 @@ bool choice(int answer, HashTable *hashTable)
     }
     case removeElement:
     {
-        int value = 0;
-        cout << "Enter a value to add: " << endl;
-        cin >> value;
-        if (hashTable->removeElementFromList(value))
+        cout << "Enter a value to remove: " << endl;
+        cin >> word;
+        QString qstringWord(word);
+        if (hashTable->remove(qstringWord))
         {
             cout << "\n Completed successfully." << endl;
         }

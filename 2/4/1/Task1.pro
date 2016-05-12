@@ -12,12 +12,16 @@ SOURCES += main.cpp \
     choice.cpp \
     hashtable.cpp \
     listpointer.cpp \
-    hashrs.cpp
+    hashrs.cpp \
+    hashfaq6.cpp \
+    hashrot13.cpp
 
 HEADERS += \
     choice.h \
     hashtable.h \
     listpointer.h \
     hashfunction.h \
-    hashrs.h
+    hashrs.h \
+    hashfaq6.h \
+    hashrot13.h
 

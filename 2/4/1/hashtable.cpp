@@ -5,3 +5,8 @@ HashTable::HashTable()
 
 }
 
+int HashTable::getSize()
+{
+    return hashSize;
+}
+

@@ -14,7 +14,7 @@ public:
     public:
         ElementOfList();
         ElementOfList(const QString &word);
-        int key;
+        QString key;
         ElementOfList *next;
         ElementOfList *previous;
     };

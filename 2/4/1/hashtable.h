@@ -2,6 +2,7 @@
 
 #include <QString>
 #include "listpointer.h"
+#include "hashfunction.h"
 
 class HashTable
 {
@@ -13,9 +14,12 @@ public:
     bool find(const QString &word) const;
     void getStatistics() const;
     void chooseHashFunction();
+    int getSize();
     ~HashTable();
 
 private:
     ListPointer **hashTable;
-    HashFunction *hashFunction;
+    HashFunction *usingHashFunction;
+
+    int hashSize;
 };
