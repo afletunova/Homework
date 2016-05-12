@@ -13,11 +13,18 @@ class SorterTest : public QObject
 {
     Q_OBJECT
 private:
-    const int length = 100;
-    Sorter *sort = nullptr;
-    int *arrayOfNumbers = new int[length];
+    int length;
+    Sorter *sort;
+    int *arrayOfNumbers;
 
 private slots:
+    void init()
+    {
+        length = 100;
+        sort = nullptr;
+        arrayOfNumbers = new int[length];
+    }
+
     void testEmptyArrayHeapSort()
     {
         arrayOfNumbers = new int[0];
@@ -158,6 +165,11 @@ private slots:
             }
         }
         QVERIFY(check);
+    }
+    void cleanup()
+    {
+        delete arrayOfNumbers;
+        delete sort;
     }
 };
 
