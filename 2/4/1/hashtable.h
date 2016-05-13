@@ -32,7 +32,6 @@ private:
 
     int hashSize;
     int numberOfCells;
-    double loadFactor;
     int numberOfConflicts;
     int maxLengthOfList;
 };

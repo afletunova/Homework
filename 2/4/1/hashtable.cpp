@@ -1,7 +1,7 @@
 #include "hashtable.h"
 
 HashTable::HashTable(int size)
-    :hashSize(size), numberOfCells(0), loadFactor(0.0), numberOfConflicts(0), maxLengthOfList(0), usingHashFunction(nullptr)
+    :hashSize(size), numberOfCells(0), numberOfConflicts(0), maxLengthOfList(0), usingHashFunction(nullptr)
 {
     hashTable = new ListPointer *[hashSize];
     for (int i = 0; i < hashSize; ++i)
@@ -10,19 +10,41 @@ HashTable::HashTable(int size)
     }
 }
 
+bool HashTable::add(const QString &word)
+{
+    unsigned int hashIndex = usingHashFunction->useHashFunction(word);
+    hashTable[hashIndex]->add(word);
+    ++numberOfCells;
+    int listSize = hashTable[hashIndex]->getSize();
+    if (listSize > 1)
+    {
+        ++numberOfConflicts;
+    }
+    if (listSize > maxLengthOfList)
+    {
+        maxLengthOfList = listSize;
+    }
+}
+
 void HashTable::chooseHashFunction(numberOfHashFunction number)
 {
-    if (number == faq6)
+    switch(number)
+    {
+    case faq6:
     {
         usingHashFunction = new HashFAQ6;
+        break;
     }
-    else if (number == rot13)
+    case rot13:
     {
         usingHashFunction = new HashRot13;
+        break;
     }
-    else
+    case rs:
     {
         usingHashFunction = new HashRs;
+        break;
+    }
     }
 }
 
