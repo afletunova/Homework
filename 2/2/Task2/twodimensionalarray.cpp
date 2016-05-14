@@ -17,77 +17,68 @@ void createTwoDimensionalArray(int **&array, int size)
 
 bool twoDimensionalArrayRandom(int **&array, int size)
 {
-    if (size > 0)
-    {
-        for (int i = 0; i < size; ++i)
-        {
-            for (int j = 0; j < size; ++j)
-            {
-                array[i][j] = 1 + rand() % size;
-            }
-        }
-        return true;
-    }
-    else
+    if (size <= 0)
     {
         return false;
     }
+    for (int i = 0; i < size; ++i)
+    {
+        for (int j = 0; j < size; ++j)
+        {
+            array[i][j] = 1 + rand() % size;
+        }
+    }
+    return true;
 }
 
 bool twoDimensionalArrayUser(int **&array, int size)
 {
-    if (size > 0)
-    {
-        cout << "Enter elements separating them with space:" << endl;
-        for (int i = 0; i < size; ++i)
-        {
-            for (int j = 0; j < size; ++j)
-            {
-                cin >> array[i][j];
-            }
-        }
-        return true;
-    }
-    else
+    if (size <= 0)
     {
         return false;
     }
+
+    cout << "Enter elements separating them with space:" << endl;
+    for (int i = 0; i < size; ++i)
+    {
+        for (int j = 0; j < size; ++j)
+        {
+            cin >> array[i][j];
+        }
+    }
+    return true;
 }
 
 bool printTwoDimensionalArray(int **array, int size)
 {
-    if (size > 0)
-    {
-        cout << "Array: " << endl;
-        for (int i = 0; i < size; ++i)
-        {
-            for (int j = 0; j < size; ++j)
-            {
-                cout << setw(4) << array[i][j];
-            }
-            cout << endl;
-        }
-        return true;
-    }
-    else
+    if (size <= 0)
     {
         return false;
     }
+
+    cout << "Array: " << endl;
+    for (int i = 0; i < size; ++i)
+    {
+        for (int j = 0; j < size; ++j)
+        {
+            cout << setw(4) << array[i][j];
+        }
+        cout << endl;
+    }
+    return true;
 }
 
 bool deleteArray(int **&array, int size)
 {
-    if (size > 0)
+    if (size <= 0)
     {
-        for (int i = 0; i < size; ++i)
-        {
-            delete[] array[i];
-        }
-        delete[] array;
-        return true;
+      return false;
     }
-    else
+
+    for (int i = 0; i < size; ++i)
     {
-        return false;
+        delete[] array[i];
     }
+    delete[] array;
+    return true;
 }
