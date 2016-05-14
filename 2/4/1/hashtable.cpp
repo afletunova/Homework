@@ -26,6 +26,15 @@ bool HashTable::add(const QString &word)
     }
 }
 
+void HashTable::getStatistics() const
+{
+    cout << "Statictics on the hash table: " << endl
+         << "Total number of cells: " << numberOfCells << endl
+         << "Load factor: " << numberOfCells / hashSize << endl
+         << "Number of collision: " << numberOfConflicts << endl
+         << "Maximum length of list in a conflict(collision) cells: " << maxLengthOfList << endl;
+}
+
 void HashTable::chooseHashFunction(numberOfHashFunction number)
 {
     switch(number)
