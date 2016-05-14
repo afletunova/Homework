@@ -77,6 +77,19 @@ int ListPointer::getSize()
     return size;
 }
 
+bool ListPointer::exist(const QString &word)
+{
+    ElementOfList *auxiliary = head;
+    while (auxiliary)
+    {
+        if (auxiliary->key == word)
+        {
+            return true;
+        }
+        auxiliary = auxiliary->next;
+    }
+}
+
 bool ListPointer::removeList(ElementOfList *head)
 {
     while (head)

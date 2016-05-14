@@ -38,6 +38,12 @@ bool HashTable::remove(const QString &word)
     }
 }
 
+bool HashTable::find(const QString &word) const
+{
+    unsigned int hashIndex = usingHashFunction->useHashFunction(word);
+    return hashTable[hashIndex]->exist(word);
+}
+
 void HashTable::getStatistics() const
 {
     cout << "Statictics on the hash table: " << endl
@@ -66,7 +72,7 @@ int HashTable::getMaximalLengthOfList() const
     return maxLengthOfList;
 }
 
-void HashTable::chooseHashFunction(numberOfHashFunction number)
+void HashTable::chooseHashFunction(int number)
 {
     switch(number)
     {
@@ -93,5 +99,11 @@ void HashTable::chooseHashFunction(numberOfHashFunction number)
 int HashTable::getSize()
 {
     return hashSize;
+}
+
+HashTable::~HashTable()
+{
+    delete hashTable;
+    delete usingHashFunction;
 }
 

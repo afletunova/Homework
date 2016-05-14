@@ -6,12 +6,7 @@
 #include "hashrot13.h"
 #include "hashrs.h"
 
-enum numberOfHashFunction
-{
-    faq6,
-    rot13,
-    rs
-};
+enum {faq6, rot13, rs};
 
 class HashTable
 {
@@ -22,7 +17,7 @@ public:
     bool remove(const QString &word);
     bool find(const QString &word) const;
     void getStatistics() const;
-    void chooseHashFunction(numberOfHashFunction number);
+    void chooseHashFunction(int number);
     int getMaximalLengthOfList() const;
     int getSize();
     ~HashTable();

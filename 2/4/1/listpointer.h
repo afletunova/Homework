@@ -9,6 +9,7 @@ public:
     bool add(const QString $word);
     bool remove(const QString &word);
     int getSize();
+    bool exist(const QString &word);
     class ElementOfList
     {
     public:
