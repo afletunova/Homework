@@ -17,7 +17,7 @@ enum {
 
 bool choice(int answer, HashTable *hashTable)
 {
-    char *word = new char[length];
+    char *word = new char[length]();
     switch(answer)
     {
     case toExit: return true;
