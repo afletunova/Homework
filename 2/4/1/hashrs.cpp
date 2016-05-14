@@ -1,6 +1,6 @@
 #include "hashrs.h"
 
-unsigned int HashRs::useHashFunction(const QString &word)
+unsigned int HashRs::useHashFunction(const QString &word, const int &hashSize)
 {
     QByteArray byteArray = word.toLocal8Bit();
     char *string = byteArray.data();
@@ -15,5 +15,5 @@ unsigned int HashRs::useHashFunction(const QString &word)
         currentValueCoefficient *= constant;
     }
 
-    return hash;
+    return hash % hashSize;
 }

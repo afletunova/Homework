@@ -5,11 +5,19 @@ using namespace std;
 
 const int length = 32;
 
-enum {toExit, addElement, removeElement, getSizeOfHashTable, findElement, getStatisticsOfHashTable, toChooseHashFunction};
+enum {
+    toExit,
+    addElement,
+    removeElement,
+    getSizeOfHashTable,
+    findElement,
+    getStatisticsOfHashTable,
+    toChooseHashFunction
+};
+
 bool choice(int answer, HashTable *hashTable)
 {
     char *word = new char[length];
-    word = "\0";
     switch(answer)
     {
     case toExit: return true;

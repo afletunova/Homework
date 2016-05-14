@@ -1,6 +1,6 @@
 #include "hashfaq6.h"
 
-unsigned int HashFAQ6::useHashFunction(const QString &word)
+unsigned int HashFAQ6::useHashFunction(const QString &word, const int &hashSize)
 {
     QByteArray byteArray = word.toLocal8Bit();
     char *string = byteArray.data();
@@ -16,5 +16,5 @@ unsigned int HashFAQ6::useHashFunction(const QString &word)
     hash ^= (hash >> 11);
     hash += (hash << 15);
 
-    return hash;
+    return hash % hashSize;
 }

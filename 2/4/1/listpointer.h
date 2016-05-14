@@ -2,6 +2,10 @@
 
 #include <QString>
 
+/*!
+ * \brief The ListPointer class - class that implements ADT "List" on pointers
+ */
+
 class ListPointer
 {
 public:

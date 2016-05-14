@@ -16,7 +16,7 @@ HashTable::HashTable(int size)
 
 bool HashTable::add(const QString &word)
 {
-    unsigned int hashIndex = usingHashFunction->useHashFunction(word);
+    unsigned int hashIndex = usingHashFunction->useHashFunction(word, hashSize);
     hashTable[hashIndex]->add(word);
     ++numberOfCells;
     int listSize = hashTable[hashIndex]->getSize();
@@ -28,7 +28,7 @@ bool HashTable::add(const QString &word)
 
 bool HashTable::remove(const QString &word)
 {
-    unsigned int hashIndex = usingHashFunction->useHashFunction(word);
+    unsigned int hashIndex = usingHashFunction->useHashFunction(word, hashSize);
     hashTable[hashIndex]->remove(word);
     --numberOfCells;
     int listSize = hashTable[hashIndex]->getSize();
@@ -40,7 +40,7 @@ bool HashTable::remove(const QString &word)
 
 bool HashTable::find(const QString &word) const
 {
-    unsigned int hashIndex = usingHashFunction->useHashFunction(word);
+    unsigned int hashIndex = usingHashFunction->useHashFunction(word, hashSize);
     return hashTable[hashIndex]->exist(word);
 }
 

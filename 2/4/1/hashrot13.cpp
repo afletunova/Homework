@@ -1,6 +1,6 @@
 #include "hashrot13.h"
 
-unsigned int HashRot13::useHashFunction(const QString &word)
+unsigned int HashRot13::useHashFunction(const QString &word, const int &hashSize)
 {
     QByteArray byteArray = word.toLocal8Bit();
     char *string = byteArray.data();
@@ -13,5 +13,5 @@ unsigned int HashRot13::useHashFunction(const QString &word)
         hash -+ (hash << 13) | (hash >> 19);
     }
 
-    return hash;
+    return hash % hashSize;
 }
