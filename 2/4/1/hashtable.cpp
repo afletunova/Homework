@@ -1,7 +1,11 @@
 #include "hashtable.h"
 
+#include <iostream>
+
+using namespace std;
+
 HashTable::HashTable(int size)
-    :hashSize(size), numberOfCells(0), numberOfConflicts(0), maxLengthOfList(0), usingHashFunction(nullptr)
+    :hashSize(size), numberOfCells(0), numberOfConflicts(0), usingHashFunction(nullptr)
 {
     hashTable = new ListPointer *[hashSize];
     for (int i = 0; i < hashSize; ++i)
@@ -20,9 +24,17 @@ bool HashTable::add(const QString &word)
     {
         ++numberOfConflicts;
     }
-    if (listSize > maxLengthOfList)
+}
+
+bool HashTable::remove(const QString &word)
+{
+    unsigned int hashIndex = usingHashFunction->useHashFunction(word);
+    hashTable[hashIndex]->remove(word);
+    --numberOfCells;
+    int listSize = hashTable[hashIndex]->getSize();
+    if (listSize = 1)
     {
-        maxLengthOfList = listSize;
+        --numberOfConflicts;
     }
 }
 
@@ -32,7 +44,26 @@ void HashTable::getStatistics() const
          << "Total number of cells: " << numberOfCells << endl
          << "Load factor: " << numberOfCells / hashSize << endl
          << "Number of collision: " << numberOfConflicts << endl
-         << "Maximum length of list in a conflict(collision) cells: " << maxLengthOfList << endl;
+         << "Maximum length of list in a conflict(collision) cells: " << getMaximalLengthOfList() << endl;
+}
+
+int HashTable::getMaximalLengthOfList() const
+{
+    if (numberOfConflicts == 0)
+    {
+        return 0;
+    }
+
+    int maxLengthOfList = 0;
+    for (int i = 0; i < hashSize; ++i)
+    {
+        int size = hashTable[i]->getSize();
+        if (size > maxLengthOfList)
+        {
+            maxLengthOfList = size;
+        }
+    }
+    return maxLengthOfList;
 }
 
 void HashTable::chooseHashFunction(numberOfHashFunction number)

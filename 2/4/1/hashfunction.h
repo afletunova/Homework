@@ -4,6 +4,5 @@
 class HashFunction
 {
 public:
-    HashFunction();
-    virtual unsigned int useHashFunction(const QString &word);
+    virtual unsigned int useHashFunction(const QString &word) = 0;
 };

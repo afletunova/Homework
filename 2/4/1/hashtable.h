@@ -22,7 +22,8 @@ public:
     bool remove(const QString &word);
     bool find(const QString &word) const;
     void getStatistics() const;
-    void chooseHashFunction(const QString &functionName);
+    void chooseHashFunction(numberOfHashFunction number);
+    int getMaximalLengthOfList() const;
     int getSize();
     ~HashTable();
 
@@ -33,5 +34,4 @@ private:
     int hashSize;
     int numberOfCells;
     int numberOfConflicts;
-    int maxLengthOfList;
 };
