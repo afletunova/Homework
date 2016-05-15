@@ -7,7 +7,6 @@
 class ShowetteFileOutput : public Showette
 {
 public:
-    ShowetteFileOutput(){}
     /*!
      * \brief outputSpiralArray - output array to file
      * \param array - an input array

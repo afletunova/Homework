@@ -9,7 +9,6 @@
 class Showette
 {
 public:
-    Showette(){}
     /*!
      * \brief outputSpiralArray - output an array in spiral form
      * \param array - input array

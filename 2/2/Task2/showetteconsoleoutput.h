@@ -7,7 +7,6 @@
 class ShowetteConsoleOutput : public Showette
 {
 public:
-    ShowetteConsoleOutput(){}
     /*!
      * \brief outputSpiralArray - output array to console
      * \param array - an input array
