@@ -48,7 +48,7 @@ void HashTable::getStatistics() const
 {
     cout << "Statictics on the hash table: " << endl
          << "Total number of cells: " << numberOfCells << endl
-         << "Load factor: " << numberOfCells / hashSize << endl
+         << "Load factor: " << (double) numberOfCells / hashSize << endl
          << "Number of collision: " << numberOfConflicts << endl
          << "Maximum length of list in a conflict(collision) cells: " << getMaximalLengthOfList() << endl;
 }
