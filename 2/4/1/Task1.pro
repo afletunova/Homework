@@ -1,5 +1,6 @@
 QT += core
 QT -= gui
+QT += testlib
 
 TARGET = Task1
 CONFIG += console
@@ -8,13 +9,14 @@ CONFIG += c++11
 
 TEMPLATE = app
 
-SOURCES += main.cpp \
+SOURCES += \
     choice.cpp \
     hashtable.cpp \
     listpointer.cpp \
     hashrs.cpp \
     hashfaq6.cpp \
-    hashrot13.cpp
+    hashrot13.cpp \
+    main.cpp
 
 HEADERS += \
     choice.h \
@@ -23,5 +25,6 @@ HEADERS += \
     hashfunction.h \
     hashrs.h \
     hashfaq6.h \
-    hashrot13.h
+    hashrot13.h \
+    hashtabletest.h
 

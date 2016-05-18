@@ -1,5 +1,7 @@
 #include <iostream>
+
 #include "hashtable.h"
+#include "hashtabletest.h"
 #include "choice.h"
 
 using namespace std;
@@ -34,6 +36,9 @@ int main()
         cin >> answer;
         exit = choice(answer, table);
     }
+
+    HashTableTest tester;
+    QTest::qExec(&tester);
 
     return 0;
 }
