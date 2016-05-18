@@ -9,5 +9,5 @@
 class HashRs : public HashFunction
 {
 public:
-    unsigned int useHashFunction(const QString &word, const int &hashSize);
+    unsigned int getHash(const QString &word, const int &hashSize);
 };

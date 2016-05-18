@@ -8,5 +8,5 @@
 class HashFunction
 {
 public:
-    virtual unsigned int useHashFunction(const QString &word, const int &hashSize) = 0;
+    virtual unsigned int getHash(const QString &word, const int &hashSize) = 0;
 };

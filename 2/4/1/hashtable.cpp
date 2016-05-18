@@ -14,9 +14,14 @@ HashTable::HashTable(int size)
     }
 }
 
+int HashTable::getSize()
+{
+    return hashSize;
+}
+
 bool HashTable::add(const QString &word)
 {
-    unsigned int hashIndex = usingHashFunction->useHashFunction(word, hashSize);
+    unsigned int hashIndex = usingHashFunction->getHash(word, hashSize);
     hashTable[hashIndex]->add(word);
     ++numberOfCells;
     int listSize = hashTable[hashIndex]->getSize();
@@ -28,7 +33,7 @@ bool HashTable::add(const QString &word)
 
 bool HashTable::remove(const QString &word)
 {
-    unsigned int hashIndex = usingHashFunction->useHashFunction(word, hashSize);
+    unsigned int hashIndex = usingHashFunction->getHash(word, hashSize);
     hashTable[hashIndex]->remove(word);
     --numberOfCells;
     int listSize = hashTable[hashIndex]->getSize();
@@ -40,7 +45,7 @@ bool HashTable::remove(const QString &word)
 
 bool HashTable::find(const QString &word) const
 {
-    unsigned int hashIndex = usingHashFunction->useHashFunction(word, hashSize);
+    unsigned int hashIndex = usingHashFunction->getHash(word, hashSize);
     return hashTable[hashIndex]->exist(word);
 }
 
@@ -94,15 +99,17 @@ void HashTable::chooseHashFunction(int number)
     }
 }
 
-
-
-int HashTable::getSize()
+int HashTable::getNumberOfCells() const
 {
-    return hashSize;
+    return numberOfCells;
 }
 
 HashTable::~HashTable()
 {
+    for (int i = 0; i < hashSize; ++i)
+    {
+        delete hashTable[i];
+    }
     delete hashTable;
     delete usingHashFunction;
 }

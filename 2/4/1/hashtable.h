@@ -20,6 +20,7 @@ class HashTable
 {
 public:
     HashTable(int size);
+    int getSize();
     int hashFunction(const QString &word, const int &hashSize);
     bool add(const QString &word);
     bool remove(const QString &word);
@@ -31,12 +32,13 @@ public:
     bool find(const QString &word) const;
     void getStatistics() const;
     void chooseHashFunction(int number);
+    int getNumberOfCells() const;
     int getMaximalLengthOfList() const;
-    int getSize();
     ~HashTable();
 
 private:
     ListPointer **hashTable;
+
     HashFunction *usingHashFunction;
 
     int hashSize;
