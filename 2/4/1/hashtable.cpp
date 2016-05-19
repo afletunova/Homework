@@ -108,9 +108,9 @@ HashTable::~HashTable()
 {
     for (int i = 0; i < hashSize; ++i)
     {
-        delete hashTable[i];
+        delete[] hashTable[i];
     }
-    delete hashTable;
+    delete[] hashTable;
     delete usingHashFunction;
 }
 
