@@ -2,6 +2,7 @@
 
 #include <QtCore/QObject>
 #include <QtTest/QtTest>
+#include <cstdlib>
 
 #include "set.h"
 
