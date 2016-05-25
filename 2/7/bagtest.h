@@ -2,6 +2,7 @@
 
 #include <QtTest/QtTest>
 #include <QtCore/QObject>
+#include <cstdlib>
 
 #include "bag.h"
 
