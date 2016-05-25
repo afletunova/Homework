@@ -98,7 +98,7 @@ private slots:
             bag->add(array[i]);
         }
 
-        Bag<int> *secondBag = bag;
+        Bag<int> *secondBag(bag);
 
         QCOMPARE(bag, secondBag);
     }
