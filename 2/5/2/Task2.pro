@@ -1,5 +1,6 @@
 QT += core
 QT -= gui
+QT += testlib
 
 TARGET = Task2
 CONFIG += console
@@ -12,5 +13,6 @@ SOURCES += main.cpp
 
 HEADERS += \
     set.h \
-    tree.h
+    tree.h \
+    settest.h
 

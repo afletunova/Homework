@@ -1,7 +1,9 @@
-#include <QCoreApplication>
+#include "settest.h"
 
-int main(int argc, char *argv[])
+int main()
 {
+    SetTest tester;
+    QTest::qExec(&tester);
 
     return 0;
 }

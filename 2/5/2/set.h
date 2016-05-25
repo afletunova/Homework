@@ -3,6 +3,10 @@
 #include "tree.h"
 
 template <typename T>
+
+/*!
+ * \brief The Set class - class that implements ADT "Set" based on AVL-Tree
+ */
 class Set
 {
 public:
@@ -11,26 +15,23 @@ public:
     bool exist(const T &element);
     bool remove(const T &element);
     int getAmount() const;
+    void printSet();
     ~Set();
 
 private:
-    Tree *tree;
+    Tree<T> *tree;
 };
 
 template <typename T>
 Set<T>::Set()
 {
-    tree = new Tree();
+    tree = new Tree<T>();
 }
 
 template <typename T>
 bool Set<T>::add(const T &element)
 {
-    if (!tree->exist(element))
-    {
-        return tree->add(element);
-    }
-    return false;
+    return tree->add(element);
 }
 
 template <typename T>
@@ -49,6 +50,12 @@ template <typename T>
 int Set<T>::getAmount() const
 {
     return tree->getAmount();
+}
+
+template <typename T>
+void Set<T>::printSet()
+{
+    tree->printTree();
 }
 
 template <typename T>
