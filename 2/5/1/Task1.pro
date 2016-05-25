@@ -1,5 +1,6 @@
 QT += core
 QT -= gui
+QT += testlib
 
 TARGET = Task1
 CONFIG += console
@@ -19,5 +20,6 @@ HEADERS += \
     operand.h \
     operator.h \
     treenode.h \
-    tree.h
+    tree.h \
+    treetest.h
 

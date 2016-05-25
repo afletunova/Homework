@@ -11,34 +11,33 @@ Operator::Operator()
 
 int Operator::compute()
 {
-    int leftValue = left->compute();
-    int rightValue = right->compute();
-
-    switch(operation)
+    int firstNumber = left->compute();
+    int secondNumber = right->compute();
+    switch (operation)
     {
     case '+':
     {
-        return leftValue + rightValue;
+        return (firstNumber + secondNumber);
     }
     case '-':
     {
-        return leftValue - rightValue;
+        return (firstNumber - secondNumber);
     }
     case '*':
     {
-        return leftValue * rightValue;
+        return  (firstNumber * secondNumber);
     }
     case '/':
     {
         try
         {
-            if (rightValue == 0)
+            if (secondNumber == 0)
             {
                 throw DivisionByZeroError();
             }
             else
             {
-                return leftValue / rightValue;
+                return (float)(firstNumber / secondNumber);
             }
         }
         catch (const DivisionByZeroError &error)
@@ -51,14 +50,15 @@ int Operator::compute()
         break;
     }
     }
+    return 0;
 }
 
-void Operator::printResult()
+void Operator::print()
 {
     cout << "(" << operation << " ";
-    left->printResult();
+    left->print();
     cout << " ";
-    right->printResult();
+    right->print();
     cout << ")";
 }
 

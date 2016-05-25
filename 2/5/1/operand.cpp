@@ -13,7 +13,7 @@ int Operand::compute()
     return value;
 }
 
-void Operand::printResult()
+void Operand::print()
 {
     cout << value;
 }

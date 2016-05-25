@@ -13,9 +13,3 @@ void TreeNode::addRight(TreeNode *right)
 {
     this->right = right;
 }
-
-TreeNode::~TreeNode()
-{
-    delete left;
-    delete right;
-}

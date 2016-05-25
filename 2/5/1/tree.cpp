@@ -2,8 +2,11 @@
 #include "operand.h"
 #include "operator.h"
 
+#include <iostream>
 #include <cctype>
 #include <QStack>
+
+using namespace std;
 
 Tree::Tree(const QString &expression)
 {
@@ -37,10 +40,11 @@ Tree::Tree(const QString &expression)
             {
                 afterOpeningBracket = true;
                 Operator *operatorNode = new Operator;
+                stack.push(operatorNode);
             }
             else if (isOperation(currentSymbol))
             {
-                if (currentSymbol == '-' && afterOpeningBracket)
+                if (currentSymbol == '-' && !afterOpeningBracket)
                 {
                     sign = -1;
                     afterOpeningBracket = false;
@@ -53,7 +57,7 @@ Tree::Tree(const QString &expression)
                 afterOpeningBracket = false;
                 TreeNode *right = stack.pop();
                 TreeNode *left = stack.pop();
-                TreeNode *node = stack.top();
+                TreeNode *node = stack.pop();
                 node->addLeft(left);
                 node->addRight(right);
                 stack.push(node);
@@ -61,6 +65,16 @@ Tree::Tree(const QString &expression)
         }
     }
     root = stack.pop();
+}
+
+int Tree::compute()
+{
+    return root->compute();
+}
+
+void Tree::print()
+{
+    root->print();
 }
 
 Tree::~Tree()
