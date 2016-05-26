@@ -1,133 +1,169 @@
 #include "calculator.h"
-#include "divisionbyzeroerror.h"
-
 #include <iostream>
-#include <cctype>
 
 using namespace std;
 
-Calculator::Calculator()
-    :lineSize(lineSize), countNumbers(1), numberOfDigits(0)
-{
-    arrayOfBits = new int[size];
-    for (int i = 0; i < size; ++i)
-    {
-        arrayOfBits[i] = 0;
-    }
-}
+Calculator::Calculator(const QString &expression)
+    :expression(expression)
+{}
 
-QString Calculator::calculate()
+float Calculator::calculate()
 {
+    parser();
+
     int sign = 1;
-    if (*input == '-')
-    {
-        sign = -1;
-    }
-    QByteArray array = this->transform().toLocal8Bit();
-    input = array.data();
-
-    int *currentNumbers = new int[countNumbers];
-    for (int i = 0; i < countNumbers; ++i)
-    {
-        currentNumbers[i] = 0;
-    }
-
     int count = 0;
-    int i = 0; int j = 0; int k = 0;
-    while (*input && k < lineSize)
+    float coefficient = 0.1;
+    bool afterPoint = false;
+    char previousSymbol = '\0';
+    float currentNumber = 0.0;
+    QByteArray array = expression.toLocal8Bit();
+    int length = expression.size();
+    for (int i = 0; i < length; ++i)
     {
-        char currentSymbol = *input;
-        if (isdigit(currentSymbol))
+        char symbol = array.data()[i];
+        if (isdigit(symbol) || (symbol == '.'))
         {
-            if (j < arrayOfBits[i + 1])
+            if (previousSymbol == '-')
             {
-                ++j;
+                sign = -1;
+            }
+            if (afterPoint)
+            {
+                currentNumber = currentNumber * coefficient + (symbol - '0');
+                coefficient /= 10;
             }
             else
             {
-                stack.push(sign * currentNumbers[i]);
-                sign = 1; j = 0;
-                ++count; ++i;
+                currentNumber = currentNumber * 10 + (symbol - '0');
             }
-            currentNumbers[i] = currentNumbers[i] * 10 + (currentSymbol - '0');
         }
-        else if (isOperation(currentSymbol))
+        else if (symbol == ' ' && isdigit(previousSymbol))
         {
-            stack.push(sign * currentNumbers[i]);
-            j = 0;
-            ++count; ++i;
+            stack.push(sign * currentNumber);
+            ++count;
+            sign = 1;
+            coefficient = 0.1;
+            currentNumber = 0.0;
+            afterPoint = false;
+        }
+        else if (isOperation(symbol))
+        {
+            if (isdigit(previousSymbol))
+            {
+                stack.push(currentNumber);
+                ++count;
+                sign = 1;
+                coefficient = 0.1;
+                currentNumber = 0.0;
+                afterPoint = false;
+            }
             if (count >= 2)
             {
-                stack.push(calculation(currentSymbol));
+                stack.push(calculation(symbol));
                 --count;
             }
         }
-        *input++; ++k;
+        previousSymbol = symbol;
     }
-    return QString::number(stack.pop());
+    return stack.pop();
 }
 
-void Calculator::read(char *text, const int &size)
+void Calculator::parser()
 {
-    input = text;
-    lineSize = size;
-}
-
-Calculator::~Calculator()
-{
-    delete[] arrayOfBits;
-}
-
-QString Calculator::transform()
-{
-    char transformed[lineSize];
-    int i = -1;
+    int length = expression.size();
+    char *result = new char[length * 2]();
+    char previousSymbol = '\0';
+    bool afterOperation = false;
+    bool minusWaitingOfOperand = false;
+    int j = -1;
+    QByteArray array = expression.toLocal8Bit();
     QStack<char> operations;
 
-    if (*input == '-')
+    for (int i = 0; i < length; ++i)
     {
-        *input++;
-        --lineSize;
-    }
-    while(*input)
-    {
-        char symbol = *input;
-        if (isdigit(symbol))
+        char symbol = array.data()[i];
+        if (!isdigit(symbol) && isdigit(previousSymbol))
         {
-            transformed[++i] = symbol;
-            ++arrayOfBits[countNumbers];
-            ++numberOfDigits;
+            result[++j] = ' ';
         }
-        else
+        if (isdigit(symbol) || symbol == '.')
         {
-            if (isOperation(symbol))
+            if (minusWaitingOfOperand)
             {
-                ++countNumbers;
-                if (operations.empty() || (priority(operations.top()) < priority(symbol)))
-                {
-                    operations.push(symbol);
-                }
-                else
-                {
-                    while (!operations.empty() && (priority(operations.top()) >= priority(symbol)))
-                    {
-                        transformed[++i] = operations.pop();
-                    }
-                    operations.push(symbol);
-                }
+                result[++j] = '-';
+                minusWaitingOfOperand = false;
+            }
+            result[++j] = symbol;
+        }
+        else if (symbol == '(')
+        {
+            operations.push('(');
+        }
+        else if (symbol == ')')
+        {
+            while (operations.top() != '(')
+            {
+                result[++j] = operations.pop();
+            }
+            if (operations.top() == '(')
+            {
+                operations.pop();
+            }
+            else
+            {
+                throw EnteredExpressionIsIncorrect();
             }
         }
-        *input++;
+        else if (isOperation(symbol))
+        {
+            if ((symbol == '-') && afterOperation)
+            {
+                minusWaitingOfOperand = true;
+            }
+            if (operations.empty())
+            {
+                operations.push(symbol);
+            }
+            else if (priority(operations.top()) < priority(symbol))
+            {
+                operations.push(symbol);
+            }
+            else
+            {
+                while (!operations.empty()
+                       && (priority(operations.top()) >= priority(symbol)))
+                {
+                    result[++j] = operations.pop();
+                }
+                operations.push(symbol);
+            }
+        }
+        if (!isOperation(symbol) && afterOperation)
+        {
+            afterOperation = false;
+        }
+        if (!isdigit(symbol) && !((symbol == '-') && minusWaitingOfOperand))
+        {
+            result[++j] = ' ';
+        }
     }
     while (!operations.empty())
     {
-        transformed[++i] = operations.pop();
+        result[++j] = operations.pop();
     }
 
-    return QString(transformed);
+    result[++j] = '\0';
+    expression = QString(result);
+    delete[] result;
 }
 
-int Calculator::priority(const char &operation)
+bool Calculator::isOperation(const char &symbol)
+{
+    return ((symbol == '+') || (symbol == '-') || (symbol == '*') || (symbol == '/') || (symbol == '-'));
+}
+
+int Calculator::priority(const char &operation) const
 {
     switch(operation)
     {
@@ -135,15 +171,11 @@ int Calculator::priority(const char &operation)
     case '/': return 2;
     case '-':
     case '+': return 1;
+    default: return 0;
     }
 }
 
-bool Calculator::isOperation(const char &symbol)
-{
-    return ((symbol == '+') || (symbol == '-') || (symbol == '*') || (symbol == '/'));
-}
-
-double Calculator::calculation(const char &operation)
+float Calculator::calculation(const char &operation)
 {
     int secondNumber = stack.pop();
     int firstNumber = stack.pop();

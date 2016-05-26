@@ -51,6 +51,21 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(currentButton, SIGNAL(clicked()), this, SLOT(clear()));
     ui->gridLayout->addWidget(currentButton, 4, 2);
 
+    currentButton = new QPushButton("(");
+    connect(currentButton, SIGNAL(clicked()), signalMapper, SLOT(map()));
+    signalMapper->setMapping(currentButton, "(");
+    ui->gridLayout->addWidget(currentButton, 5, 1);
+
+    currentButton = new QPushButton(")");
+    connect(currentButton, SIGNAL(clicked()), signalMapper, SLOT(map()));
+    signalMapper->setMapping(currentButton, ")");
+    ui->gridLayout->addWidget(currentButton, 5, 2);
+
+    currentButton = new QPushButton(")");
+    connect(currentButton, SIGNAL(clicked()), signalMapper, SLOT(map()));
+    signalMapper->setMapping(currentButton, ")");
+    ui->gridLayout->addWidget(currentButton, 5, 3);
+
     connect(signalMapper, SIGNAL(mapped(QString)), this, SLOT(clicked(QString)));
 }
 
@@ -68,11 +83,8 @@ void MainWindow::clicked(const QString &text)
 
 void MainWindow::calculate()
 {
-    calculator = new Calculator;
-    QByteArray array = lineEditor->text().toLocal8Bit();
-    calculator->read(array.data(), lineEditor->text().size());
-    lineEditor->setText(calculator->calculate());
-    delete calculator;
+    Calculator calculator(lineEditor->text());
+    lineEditor->setText(QString::number(calculator.calculate()));
 }
 
 void MainWindow::clear()

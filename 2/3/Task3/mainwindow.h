@@ -21,7 +21,6 @@ public:
 private:
     Ui::MainWindow *ui;
     QSignalMapper *signalMapper;
-    Calculator *calculator;
     QLineEdit *lineEditor;
 
 private slots:

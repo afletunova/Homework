@@ -19,8 +19,7 @@ SOURCES += main.cpp\
     calculator.cpp
 
 HEADERS  += mainwindow.h \
-    calculator.h \
-    divisionbyzeroerror.h \
-    calculatortest.h
+    calculatortest.h \
+    calculator.h
 
 FORMS    += mainwindow.ui
