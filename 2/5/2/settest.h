@@ -39,8 +39,29 @@ private slots:
 
     void RemoveNonExistenElementTest()
     {
-        set->remove(1);
-        QCOMPARE(set->getAmount(), 0);
+        try
+        {
+            set->remove(1);
+            QVERIFY2(false, "Error was not thrown.");
+        }
+        catch (NonexistenElement &)
+        {
+            QVERIFY(true);
+        }
+    }
+
+    void AddOneElementTwiceTest()
+    {
+        try
+        {
+            set->add(1);
+            set->add(1);
+            QVERIFY2(false, "Error was not thrown.");
+        }
+        catch (AlreadyExistingElement &)
+        {
+            QVERIFY(true);
+        }
     }
 
     void AddMoreElementsTest()

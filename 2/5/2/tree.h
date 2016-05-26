@@ -20,20 +20,54 @@ public:
     void printTree();
     ~Tree();
 
+private:
     class TreeNode
     {
     public:
-        TreeNode();
-        TreeNode(const T &key);
+        TreeNode()
+            :height(1), left(nullptr), right(nullptr)
+        {}
+        TreeNode(const T &key)
+            :key(key), height(1), left(nullptr), right(nullptr)
+        {}
+        TreeNode *&getLeft()
+        {
+            return left;
+        }
+
+        TreeNode *&getRight()
+        {
+            return right;
+        }
+
+        T getKey()
+        {
+            return key;
+        }
+
+        int getHeight()
+        {
+            return height;
+        }
+
+        void changeHeight(const int &newHeight)
+        {
+            height = newHeight;
+        }
+
+    private:
         T key;
         unsigned int height;
         TreeNode *left;
         TreeNode *right;
     };
 
-private:
     TreeNode *root;
     int amount;
+
+    T key(TreeNode *&node) const;
+    TreeNode *left();
+    TreeNode *right();
 
     int getHeight(TreeNode *&node) const;
     int getBalanceFactor(TreeNode *&node) const;
@@ -132,19 +166,15 @@ Tree<T>::~Tree()
 {
     while (root)
     {
-        remove(root->key);
+        remove(key(root));
     }
 }
 
 template <typename T>
-Tree<T>::TreeNode::TreeNode(const T &key)
-    :key(key), height(1), left(nullptr), right(nullptr)
-{}
-
-template <typename T>
-Tree<T>::TreeNode::TreeNode()
-    :height(1), left(nullptr), right(nullptr)
-{}
+T Tree<T>::key(Tree::TreeNode *&node) const
+{
+    return node->getKey();
+}
 
 template <typename T>
 int Tree<T>::getHeight(Tree::TreeNode *&node) const
@@ -153,13 +183,13 @@ int Tree<T>::getHeight(Tree::TreeNode *&node) const
     {
         return 0;
     }
-    return node->height;
+    return node->getHeight();
 }
 
 template <typename T>
 int Tree<T>::getBalanceFactor(Tree::TreeNode *&node) const
 {
-    return getHeight(node->right) - getHeight(node->left);
+    return getHeight(node->getRight()) - getHeight(node->getLeft());
 }
 
 template <typename T>
@@ -169,13 +199,13 @@ bool Tree<T>::find(Tree::TreeNode *&node, const T &value) const
     {
         return false;
     }
-    if (node->key > value)
+    if (node->getKey() > value)
     {
-        return find(node->left, value);
+        return find(node->getLeft(), value);
     }
-    else if (node->key < value)
+    else if (node->getKey() < value)
     {
-        return find(node->right, value);
+        return find(node->getRight(), value);
     }
     return true;
 }
@@ -183,24 +213,24 @@ bool Tree<T>::find(Tree::TreeNode *&node, const T &value) const
 template <typename T>
 void Tree<T>::updateHeight(Tree::TreeNode *&node)
 {
-    unsigned int leftHeight = getHeight(node->left);
-    unsigned int rightHeight = getHeight(node->right);
+    unsigned int leftHeight = getHeight(node->getLeft());
+    unsigned int rightHeight = getHeight(node->getRight());
     if (leftHeight > rightHeight)
     {
-        node->height = getHeight(node->left) + 1;
+        node->changeHeight(getHeight(node->getLeft()) + 1);
     }
     else
     {
-        node->height = getHeight(node->right) + 1;
+        node->changeHeight(getHeight(node->getRight()) + 1);
     }
 }
 
 template <typename T>
 typename Tree<T>::TreeNode *Tree<T>::rightRotate(Tree::TreeNode *&node)
 {
-    TreeNode *auxiliary = node->left;
-    node->left = auxiliary->right;
-    auxiliary->right = node;
+    TreeNode *auxiliary = node->getLeft();
+    node->getLeft() = auxiliary->getRight();
+    auxiliary->getRight() = node;
     updateHeight(node);
     updateHeight(auxiliary);
     return auxiliary;
@@ -209,9 +239,9 @@ typename Tree<T>::TreeNode *Tree<T>::rightRotate(Tree::TreeNode *&node)
 template <typename T>
 typename Tree<T>::TreeNode *Tree<T>::leftRotate(TreeNode *&node)
 {
-    TreeNode *auxiliary = node->right;
-    node->right = auxiliary->left;
-    auxiliary->left = node;
+    TreeNode *auxiliary = node->getRight();
+    node->getRight() = auxiliary->getLeft();
+    auxiliary->getLeft() = node;
     updateHeight(node);
     updateHeight(auxiliary);
     return auxiliary;
@@ -223,17 +253,17 @@ typename Tree<T>::TreeNode *Tree<T>::balance(Tree::TreeNode *&node)
     updateHeight(node);
     if (getBalanceFactor(node) == 2)
     {
-        if (getBalanceFactor(node->right) < 0)
+        if (getBalanceFactor(node->getRight()) < 0)
         {
-            node->right = rightRotate(node->right);
+            node->getRight() = rightRotate(node->getRight());
         }
         return leftRotate(node);
     }
     if (getBalanceFactor(node) == -2)
     {
-        if (getBalanceFactor(node->left) > 0)
+        if (getBalanceFactor(node->getLeft()) > 0)
         {
-            node->left = leftRotate(node->left);
+            node->getLeft() = leftRotate(node->getLeft());
         }
         return rightRotate(node);
     }
@@ -249,13 +279,13 @@ typename Tree<T>::TreeNode *Tree<T>::add(Tree::TreeNode *&node, const T &value)
         node = new TreeNode(value);
         return node;
     }
-    if (value > node->key)
+    if (value > node->getKey())
     {
-        node->right = add(node->right, value);
+        node->getRight() = add(node->getRight(), value);
     }
-    else if (value < node->key)
+    else if (value < node->getKey())
     {
-        node->left = add(node->left, value);
+        node->getLeft() = add(node->getLeft(), value);
     }
     return balance(node);
 }
@@ -263,9 +293,9 @@ typename Tree<T>::TreeNode *Tree<T>::add(Tree::TreeNode *&node, const T &value)
 template <typename T>
 typename Tree<T>::TreeNode *Tree<T>::findLeftmost(Tree::TreeNode *&node)
 {
-    if (node->left)
+    if (node->getLeft())
     {
-        return findLeftmost(node->left);
+        return findLeftmost(node->getLeft());
     }
     return node;
 }
@@ -273,11 +303,11 @@ typename Tree<T>::TreeNode *Tree<T>::findLeftmost(Tree::TreeNode *&node)
 template <typename T>
 typename Tree<T>::TreeNode *Tree<T>::removeLeftmost(TreeNode *&node)
 {
-    if (!node->left)
+    if (!node->getLeft())
     {
-        return node->right;
+        return node->getRight();
     }
-    node->left = removeLeftmost(node->left);
+    node->getLeft() = removeLeftmost(node->getLeft());
     return balance(node);
 }
 
@@ -288,18 +318,18 @@ typename Tree<T>::TreeNode *Tree<T>::remove(Tree::TreeNode *&node, const T &valu
     {
         return nullptr;
     }
-    if (value > node->key)
+    if (value > node->getKey())
     {
-        node->right = remove(node->right, value);
+        node->getRight() = remove(node->getRight(), value);
     }
-    else if (node->key > value)
+    else if (node->getKey() > value)
     {
-        node->left = remove(node->left, value);
+        node->getLeft() = remove(node->getLeft(), value);
     }
     else
     {
-        TreeNode *auxiliaryLeft = node->left;
-        TreeNode *auxiliaryRight = node->right;
+        TreeNode *auxiliaryLeft = node->getLeft();
+        TreeNode *auxiliaryRight = node->getRight();
         delete node;
         --amount;
 
@@ -309,8 +339,8 @@ typename Tree<T>::TreeNode *Tree<T>::remove(Tree::TreeNode *&node, const T &valu
         }
 
         TreeNode *Leftmost = findLeftmost(auxiliaryRight);
-        Leftmost->right = removeLeftmost(auxiliaryRight);
-        Leftmost->left = auxiliaryLeft;
+        Leftmost->getRight() = removeLeftmost(auxiliaryRight);
+        Leftmost->getLeft() = auxiliaryLeft;
 
         return balance(Leftmost);
     }
@@ -332,10 +362,10 @@ void Tree<T>::printTree(Tree::TreeNode *&node)
     }
     else
     {
-        cout << '(' << node->key << ',';
-        printTree(node->left);
+        cout << '(' << node->getKey() << ',';
+        printTree(node->getLeft());
         cout << ',';
-        printTree(node->right);
+        printTree(node->getRight());
         cout << ')';
     }
 }
