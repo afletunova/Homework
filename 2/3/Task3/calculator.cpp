@@ -1,6 +1,7 @@
 #include "calculator.h"
 #include <iostream>
 #include <QString>
+#include <cctype>
 
 using namespace std;
 
