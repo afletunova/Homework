@@ -29,20 +29,13 @@ int Operator::compute()
     }
     case '/':
     {
-        try
+        if (secondNumber == 0)
         {
-            if (secondNumber == 0)
-            {
-                throw DivisionByZeroError();
-            }
-            else
-            {
-                return (float)(firstNumber / secondNumber);
-            }
+            throw DivisionByZeroError();
         }
-        catch (const DivisionByZeroError &error)
+        else
         {
-            cout << "Division by zero!" << endl;
+            return (float)(firstNumber / secondNumber);
         }
     }
     default:

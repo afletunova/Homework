@@ -1,6 +1,7 @@
 #pragma once
 
 #include "tree.h"
+#include "divisionbyzeroerror.h"
 
 #include <QtTest/QtTest>
 #include <QtCore/QObject>
@@ -28,5 +29,19 @@ private slots:
     {
         tree = new Tree("( + ( - 3 -4 ) 8 )");
         QCOMPARE(tree->compute(), 15);
+    }
+
+    void DivisionByZeroTest()
+    {
+        try
+        {
+            tree = new Tree("( / 2 0 )");
+            tree->compute();
+            QVERIFY2(false, "Exception was not thrown");
+        }
+        catch (DivisionByZeroError &)
+        {
+            QVERIFY(true);
+        }
     }
 };
