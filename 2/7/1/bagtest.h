@@ -2,7 +2,6 @@
 
 #include <QtTest/QtTest>
 #include <QtCore/QObject>
-#include <cstdlib>
 
 #include "bag.h"
 
@@ -39,8 +38,15 @@ private slots:
 
     void removeNonExistenElementTest()
     {
-        bag->remove(1);
-        QCOMPARE(bag->getAmount(), 0);
+        try
+        {
+            bag->remove(2);
+            QVERIFY2(false, "Error was not thrown.");
+        }
+        catch (NonexistenElement &)
+        {
+            QVERIFY(true);
+        }
     }
 
     void addMoreElementsTest()

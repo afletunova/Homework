@@ -2,9 +2,19 @@
 
 #include "tree.h"
 
+class NonexistenElement
+{
+public:
+    NonexistenElement()
+    {
+        cout << "Element does not exist!" << endl;
+    }
+};
+
 template <typename T>
 /*!
  * \brief The Bag class - class that implements ADT "Multi Set" based on AVL-Tree
+ * It is a class set with the possibility of adding identical elements.
  */
 class Bag
 {
@@ -48,7 +58,11 @@ bool Bag<T>::exist(const T &element) const
 template <typename T>
 bool Bag<T>::remove(const T &element) const
 {
-    return tree->remove(element);
+    if (exist(element))
+    {
+        return tree->remove(element);
+    }
+    throw NonexistenElement();
 }
 
 template <typename T>
