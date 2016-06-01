@@ -20,6 +20,6 @@ private slots:
         }
         Vector<5> vector(array);
         Vector<5> newVector(vector);
-        QCOMPARE(vector, newVector);
+        QVERIFY(vector == newVector);
     }
 };
