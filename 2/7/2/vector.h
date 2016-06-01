@@ -1,9 +1,15 @@
 #pragma once
 
+/*!
+ * \brief The OutOfRangeError class - exception that during an attempt to go beyond the border of the vector.
+ */
 class OutOfRangeError
 {};
 
 template <int n>
+/*!
+ * \brief The Vector class - class that implements an advanced array.
+ */
 class Vector
 {
 public:
@@ -66,7 +72,7 @@ Vector<n> Vector<n>::operator +(const Vector<n> &object) const
     Vector<n> newVector;
     for (int i = 0; i < n; ++i)
     {
-        newVector[i] = vector[i] + object[i];
+        newVector[i] = this->at(i) + object.at(i);
     }
     return newVector;
 }
@@ -77,7 +83,7 @@ Vector<n> Vector<n>::operator -(const Vector<n> &object) const
     Vector<n> newVector;
     for (int i = 0; i < n; ++i)
     {
-        newVector[i] = vector[i] + object[i];
+        newVector[i] = this->at(i) - object.at(i);
     }
     return newVector;
 }
@@ -88,7 +94,7 @@ int Vector<n>::operator *(const Vector<n> &object) const
     int result = 0;
     for (int i = 0; i < n; ++i)
     {
-        result += (vector[i] * object[i]);
+        result += (this->at(i) * object.at(i));
     }
     return result;
 }

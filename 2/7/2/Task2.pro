@@ -1,5 +1,6 @@
 QT += core
 QT -= gui
+QT += testlib
 
 TARGET = Task2
 CONFIG += console
