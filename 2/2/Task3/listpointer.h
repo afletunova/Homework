@@ -1,6 +1,7 @@
 #pragma once
 
 #include "listscomparator.h"
+#include "elementoflist.h"
 
 template <typename T>
 /*!
@@ -14,28 +15,13 @@ public:
     bool remove(const T &value);
     bool exist(const T &value);
     int getSize() const;
-    /*!
-     * \brief The ElementOfList class - convenience class, which is a class field.
-     */
-    class ElementOfList
-    {
-    public:
-        ElementOfList();
-        /*!
-         * \brief ElementOfList - constructor to the case where value is known.
-         * \param value
-         */
-        ElementOfList(const T &value);
-        T key;
-        ElementOfList *next;
-        ElementOfList *previous;
-    };
 
+    ElementOfList<T> *getHead();
     ~ListPointer();
 
 private:
-    bool removeList(ElementOfList *head) const;
-    ElementOfList *head;
+    bool removeList(ElementOfList<T> *head) const;
+    ElementOfList<T> *head;
     int size;
 };
 
@@ -43,25 +29,13 @@ template <typename T>
 ListPointer<T>::ListPointer()
     :size(0)
 {
-    head = new ElementOfList();
-}
-
-template <typename T>
-ListPointer<T>::ElementOfList::ElementOfList()
-    :next(nullptr), previous(nullptr)
-{}
-
-template <typename T>
-ListPointer<T>::ElementOfList::ElementOfList(const T &value)
-    :next(nullptr), previous(nullptr)
-{
-    key = value;
+    head = new ElementOfList<T>();
 }
 
 template <typename T>
 bool ListPointer<T>::add(const T &value)
 {
-    ElementOfList *element = head;
+    ElementOfList<T> *element = head;
     if (element)
     {
         while (element->next && element->key > value)
@@ -69,7 +43,7 @@ bool ListPointer<T>::add(const T &value)
             element = element->next;
         }
     }
-    ElementOfList *auxiliary = new ElementOfList(value);
+    ElementOfList<T> *auxiliary = new ElementOfList<T>(value);
     auxiliary->next = element->next;
     auxiliary->previous = element;
     element->next = auxiliary;
@@ -82,7 +56,7 @@ bool ListPointer<T>::remove(const T &value)
 {
     if (head)
     {
-        ElementOfList *element = head;
+        ElementOfList<T> *element = head;
         if(element->next)
         {
             while(element->next && element->key != value)
@@ -120,7 +94,7 @@ bool ListPointer<T>::remove(const T &value)
 template <typename T>
 bool ListPointer<T>::exist(const T &value)
 {
-    ElementOfList *auxiliary = head;
+    ElementOfList<T> *auxiliary = head;
     while (auxiliary)
     {
         if (auxiliary->key == value)
@@ -139,11 +113,17 @@ int ListPointer<T>::getSize() const
 }
 
 template <typename T>
-bool ListPointer<T>::removeList(ElementOfList *head) const
+ElementOfList<T> *ListPointer<T>::getHead()
+{
+    return head;
+}
+
+template <typename T>
+bool ListPointer<T>::removeList(ElementOfList<T> *head) const
 {
     while (head)
     {
-        ElementOfList *nextHead = head->next;
+        ElementOfList<T> *nextHead = head->next;
         delete head;
         head = nextHead;
     }

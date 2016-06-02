@@ -16,5 +16,6 @@ HEADERS += \
     listpointer.h \
     sortedsettest.h \
     listscomparator.h \
-    sortedset.h
+    sortedset.h \
+    elementoflist.h
 
