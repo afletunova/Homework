@@ -9,14 +9,14 @@ class SortedSetTest : public QObject
 {
     Q_OBJECT
 private:
-    SortedSet<int> set;
+    SortedSet<int> *set;
     ListPointer<int> *firstList;
     ListPointer<int> *secondList;
-    ListPointer<int> *thirdList;
 
 private slots:
     void init()
     {
+        set = new SortedSet<int>;
         firstList = new ListPointer<int>;
         secondList = new ListPointer<int>;
     }
@@ -25,19 +25,20 @@ private slots:
     {
         delete firstList;
         delete secondList;
+        delete set;
     }
 
     void addEmptyList()
     {
-        set.add(firstList);
-        QVERIFY(set.exist(firstList));
+        set->add(firstList);
+        QVERIFY(set->exist(firstList));
     }
 
     void addListAndCheckAnother()
     {
         firstList->add(1);
-        set.add(firstList);
-        QVERIFY(!set.exist(secondList));
+        set->add(firstList);
+        QVERIFY(!set->exist(secondList));
     }
 
     void addAndRemoveList()
@@ -45,9 +46,34 @@ private slots:
         firstList->add(2);
         secondList->add(1);
         secondList->add(3);
-        set.add(firstList);
-        set.add(secondList);
-        set.remove(secondList);
-        QVERIFY(!set.exist(secondList));
+        set->add(firstList);
+        set->add(secondList);
+        set->remove(secondList);
+        QVERIFY(!set->exist(secondList));
+    }
+
+    void EmptySetTest()
+    {
+        try
+        {
+            set->MAX();
+        }
+        catch(EmptySet &)
+        {
+            QVERIFY(true);
+        }
+        QVERIFY_EXCEPTION_THROWN(set->MAX(), EmptySet);
+    }
+
+    void findMaxTest()
+    {
+        firstList->add(1);
+        firstList->add(2);
+        secondList->add(1);
+        secondList->add(2);
+        secondList->add(3);
+        set->add(firstList);
+        set->add(secondList);
+        QCOMPARE(set->MAX(), secondList);
     }
 };
