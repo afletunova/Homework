@@ -19,61 +19,38 @@ class TryingToAddExistentElement
 template <typename T>
 /*!
  * \brief The UniqueList class - class that implements list that containing no duplicate elements.
+ * Inherited from class Pointer List.
  */
-class UniqueList
+class UniqueList : public ListPointer<T>
 {
 public:
     UniqueList();
     void add(const T &value);
     void remove(const T &value);
-    bool exist(const T &value) const;
-    int getSize() const;
-    ~UniqueList();
-
-private:
-    ListPointer<T> *list;
+    ~UniqueList(){}
 };
 
 template <typename T>
 UniqueList<T>::UniqueList()
-{
-    list = new ListPointer<T>();
-}
+    :ListPointer<T>()
+{}
 
 template <typename T>
 void UniqueList<T>::add(const T &value)
 {
-    if (list->exist(value))
+    if (this->exist(value))
     {
         throw TryingToAddExistentElement();
     }
-    list->add(value);
+    this->ListPointer<T>::add(value);
 }
 
 template <typename T>
 void UniqueList<T>::remove(const T &value)
 {
-    if (!list->exist(value))
+    if (!this->exist(value))
     {
         throw TryingToRemoveNonExistentElement();
     }
-    list->remove(value);
-}
-
-template <typename T>
-bool UniqueList<T>::exist(const T &value) const
-{
-    return list->exist(value);
-}
-
-template <typename T>
-int UniqueList<T>::getSize() const
-{
-    return list->getSize();
-}
-
-template <typename T>
-UniqueList<T>::~UniqueList()
-{
-    delete list;
+    this->ListPointer<T>::remove(value);
 }

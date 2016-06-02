@@ -126,6 +126,7 @@ bool ListPointer<T>::exist(const T &value)
         }
         auxiliary = auxiliary->next;
     }
+    return false;
 }
 
 template <typename T>

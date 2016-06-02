@@ -52,6 +52,7 @@ private slots:
         {
             QVERIFY(true);
         }
+        QVERIFY_EXCEPTION_THROWN(list->add(1), TryingToAddExistentElement);
     }
 
     void RemoveNonExistentElementTest()
@@ -64,5 +65,6 @@ private slots:
         {
             QVERIFY(true);
         }
+        QVERIFY_EXCEPTION_THROWN(list->remove(1), TryingToRemoveNonExistentElement);
     }
 };
