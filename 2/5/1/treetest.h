@@ -43,5 +43,6 @@ private slots:
         {
             QVERIFY(true);
         }
+        QVERIFY_EXCEPTION_THROWN(tree->compute(), DivisionByZeroError);
     }
 };
