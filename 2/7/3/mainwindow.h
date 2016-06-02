@@ -5,6 +5,7 @@
 #include <QGridLayout>
 #include <QVector>
 #include <QPushButton>
+#include <QLabel>
 
 #include "tictactoe.h"
 
@@ -24,13 +25,14 @@ private:
     Ui::MainWindow *ui;
     QSignalMapper *signalMapper;
     QVector<QPushButton *> buttons;
-
-    void createField();
     TicTacToe *game;
+    QLabel *label;
+    void createField();
 
 private slots:
     void newGame();
     void showResult(const QString &result);
-    void changed(QPushButton *&button);
+    void changed(QWidget *button);
+    void deleteButtons();
 
 };

@@ -13,7 +13,7 @@ public:
 
 public slots:
     void newGame();
-    void changed(QPushButton *&button);
+    QString changed(QObject *button);
 
 signals:
     void gameOver(const QString &) const;
@@ -30,7 +30,7 @@ private:
     char **field;
     char winnerSymbol;
 
-    void setSymbol(QPushButton *&button);
+    void setSymbol(QObject *&button);
     void cleanUpField();
     bool win();
     bool fullDiagonal();

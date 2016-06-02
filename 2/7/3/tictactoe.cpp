@@ -48,7 +48,7 @@ void TicTacToe::newGame()
     cleanUpField();
 }
 
-void TicTacToe::changed(QPushButton *&button)
+QString TicTacToe::changed(QObject *button)
 {
     setSymbol(button);
     int line = 0; int column = 0;
@@ -69,13 +69,15 @@ void TicTacToe::changed(QPushButton *&button)
             result = QString("Second player win!");
         }
         emit gameOver(result);
+        return result;
     }
+    ++clickedButtons;
 }
 
-void TicTacToe::setSymbol(QPushButton *&button)
+void TicTacToe::setSymbol(QObject *&button)
 {
-    button->setText(QString(getCurrentSymbol()));
-    button->setEnabled(false);
+    static_cast<QPushButton *>(button)->setText(QString(getCurrentSymbol()));
+    static_cast<QPushButton *>(button)->setEnabled(false);
 }
 
 void TicTacToe::cleanUpField()
@@ -84,7 +86,7 @@ void TicTacToe::cleanUpField()
     {
         for (int j = 0; j < size; ++j)
         {
-            field[i][j] = '\0';
+            field[i][j] = '_';
         }
     }
 }
@@ -101,7 +103,7 @@ bool TicTacToe::fullDiagonal()
 
     int number = 1;
 
-    while ((field[line][column] == getCurrentSymbol()) && (line >= 0) && (column >= 0))
+    while ((line >= 0) && (column >= 0) && (field[line][column] == getCurrentSymbol()))
     {
         --line; --column;
         ++number;
@@ -110,7 +112,7 @@ bool TicTacToe::fullDiagonal()
     line = currentLine + 1;
     column = currentColumn + 1;
 
-    while ((field[line][column] == getCurrentSymbol()) && (line < size) && (column < size))
+    while ((line < size) && (column < size) && (field[line][column] == getCurrentSymbol()))
     {
         ++line; ++column;
         ++number;
@@ -127,7 +129,7 @@ bool TicTacToe::fullSecondDiagonal()
 
     int number = 1;
 
-    while ((field[line][column] == getCurrentSymbol()) && (line < size) && (column >= 0))
+    while ((line < size) && (column >= 0) && (field[line][column] == getCurrentSymbol()))
     {
         ++line; --column;
         ++number;
@@ -136,7 +138,7 @@ bool TicTacToe::fullSecondDiagonal()
     line = currentLine - 1;
     column = currentColumn + 1;
 
-    while ((field[line][column] == getCurrentSymbol()) && (line >= 0) && (column < size))
+    while ((line >= 0) && (column < size) && (field[line][column] == getCurrentSymbol()))
     {
         --line; ++column;
         ++number;
@@ -146,13 +148,13 @@ bool TicTacToe::fullSecondDiagonal()
     return (number == size);
 }
 
-bool TicTacToe::fullLine()
+bool TicTacToe::fullColumn()
 {
     int line = currentLine - 1;
 
     int number = 1;
 
-    while ((field[line][currentColumn] == getCurrentSymbol()) && (line >= 0))
+    while ((line >= 0) && (field[line][currentColumn] == getCurrentSymbol()))
     {
         --line;
         ++number;
@@ -160,7 +162,7 @@ bool TicTacToe::fullLine()
 
     line = currentLine + 1;
 
-    while ((field[line][currentColumn] == getCurrentSymbol()) && (line < size))
+    while ((line < size) && (field[line][currentColumn] == getCurrentSymbol()))
     {
         ++line;
         ++number;
@@ -170,13 +172,13 @@ bool TicTacToe::fullLine()
     return (number == size);
 }
 
-bool TicTacToe::fullColumn()
+bool TicTacToe::fullLine()
 {
     int column = currentColumn - 1;
 
     int number = 1;
 
-    while ((field[currentLine][column] == getCurrentSymbol()) && (column >= 0))
+    while ((column >= 0) && (field[currentLine][column] == getCurrentSymbol()))
     {
         --column;
         ++number;
@@ -219,6 +221,7 @@ void TicTacToe::getParameters(int &line, int &column, int id)
 {
     while (line < size)
     {
+        column = 0;
         while (column < size)
         {
             if (idarray[line][column] == id)

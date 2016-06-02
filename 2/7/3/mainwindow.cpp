@@ -3,7 +3,6 @@
 
 #include <QGridLayout>
 #include <QPushButton>
-#include <QMessageBox>
 
 const int fieldSize = 3;
 
@@ -20,7 +19,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    deleteButtons();
+    delete signalMapper;
+    delete game;
+    delete ui->buttonLayout;
     delete ui;
+
 }
 
 void MainWindow::createField()
@@ -35,10 +39,10 @@ void MainWindow::createField()
         {
             currentButton = new QPushButton;
             currentButton->setObjectName(QString::number(++k));
-            buttons.push_front(currentButton);
+            buttons.push_back(currentButton);
             currentButton->setFixedSize(20, 20);
             connect(currentButton, SIGNAL(clicked()), signalMapper, SLOT(map()));
-            signalMapper->setMapping(currentButton, k);
+            signalMapper->setMapping(currentButton, currentButton);
             ui->buttonLayout->addWidget(currentButton, i % fieldSize + 1, j % fieldSize);
         }
     }
@@ -48,7 +52,12 @@ void MainWindow::createField()
     connect(currentButton, SIGNAL(clicked()), this, SLOT(newGame()));
     ui->buttonLayout->addWidget(currentButton, fieldSize + 1, 0, 1, fieldSize);
 
-    connect(signalMapper, SIGNAL(mapped(QObject *)), this, SLOT(changed(QPushButton*&)));
+    label = new QLabel;
+    ui->buttonLayout->addWidget(label, fieldSize + 2, 0);
+
+    connect(game, SIGNAL(gameOver(QString)), this, SLOT(showResult(QString)));
+
+    connect(signalMapper, SIGNAL(mapped(QWidget *)), this, SLOT(changed(QWidget *)));
 }
 
 void MainWindow::newGame()
@@ -58,16 +67,26 @@ void MainWindow::newGame()
         button->setEnabled(true);
         button->setText("");
     }
+    label->setText("");
 }
 
 void MainWindow::showResult(const QString &result)
 {
-    QMessageBox resultBox;
-    resultBox.setText(result);
-    resultBox.setStandardButtons(QMessageBox::Ok);
+    label->setText(result);
 }
 
-void MainWindow::changed(QPushButton *&button)
+void MainWindow::changed(QWidget *button)
 {
     game->changed(button);
+}
+
+void MainWindow::deleteButtons()
+{
+    for (auto button: this->buttons)
+    {
+        delete button;
+    }
+    buttons.clear();
+    QPushButton *currentButton = this->findChild<QPushButton *>();
+    delete currentButton;
 }
