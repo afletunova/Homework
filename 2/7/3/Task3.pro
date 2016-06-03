@@ -19,6 +19,7 @@ SOURCES += main.cpp\
     tictactoe.cpp
 
 HEADERS  += mainwindow.h \
-    tictactoe.h
+    tictactoe.h \
+    tictactoetest.h
 
 FORMS    += mainwindow.ui

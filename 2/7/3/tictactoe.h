@@ -3,6 +3,10 @@
 #include <QObject>
 #include <QPushButton>
 
+/*!
+ * \brief The TicTacToe class - class that implements game "Tic Tac Toe". It works with an external user interface class.
+ */
+
 class TicTacToe : public QObject
 {
     Q_OBJECT
@@ -26,13 +30,21 @@ private:
     int currentColumn;
     int maxLength;
 
+    /*!
+     * \brief idarray - array to find the position of the сlicked button.
+     */
     int **idarray;
     char **field;
     char winnerSymbol;
 
     void setSymbol(QObject *&button);
     void cleanUpField();
+    /*!
+     * \brief win - function to check whether there is a winner
+     * \return true - if somebody is winner, false - no winner
+     */
     bool win();
+    ///functions to check winning combinations.
     bool fullDiagonal();
     bool fullSecondDiagonal();
     bool fullLine();

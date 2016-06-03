@@ -72,6 +72,11 @@ QString TicTacToe::changed(QObject *button)
         return result;
     }
     ++clickedButtons;
+    if (clickedButtons == buttons)
+    {
+        emit gameOver(QString("Draw"));
+    }
+    return ("");
 }
 
 void TicTacToe::setSymbol(QObject *&button)
