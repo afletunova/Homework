@@ -3,11 +3,15 @@
 #include "twodimensionalarray.h"
 #include "showetteconsoleoutput.h"
 #include "showettefileoutput.h"
+#include "showettetest.h"
 
 using namespace std;
 
 int main()
 {
+    ShowetteTest tester;
+    QTest::qExec(&tester);
+
     char inputAnswer = '\0';
     char outputAnswer = '\0';
     int size = 0;
@@ -78,5 +82,6 @@ int main()
     }
 
     deleteArray(array, size);
+
     return 0;
 }

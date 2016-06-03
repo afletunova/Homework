@@ -1,5 +1,6 @@
 QT += core
 QT -= gui
+QT += testlib
 
 TARGET = Task2
 CONFIG += console
@@ -18,5 +19,6 @@ HEADERS += \
     showette.h \
     twodimensionalarray.h \
     showettefileoutput.h \
-    showetteconsoleoutput.h
+    showetteconsoleoutput.h \
+    showettetest.h
 
