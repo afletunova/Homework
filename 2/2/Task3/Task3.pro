@@ -9,8 +9,7 @@ CONFIG += c++11
 
 TEMPLATE = app
 
-SOURCES += main.cpp \
-    listscomparator.cpp
+SOURCES += main.cpp
 
 HEADERS += \
     listpointer.h \

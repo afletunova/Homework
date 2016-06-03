@@ -9,14 +9,14 @@ class SortedSetTest : public QObject
 {
     Q_OBJECT
 private:
-    SortedSet<int> *set;
+    SortedSet<ListPointer<int> *> *set;
     ListPointer<int> *firstList;
     ListPointer<int> *secondList;
 
 private slots:
     void init()
     {
-        set = new SortedSet<int>;
+        set = new SortedSet<ListPointer<int> *>;
         firstList = new ListPointer<int>;
         secondList = new ListPointer<int>;
     }

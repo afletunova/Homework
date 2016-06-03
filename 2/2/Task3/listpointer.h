@@ -7,7 +7,7 @@ template <typename T>
 /*!
  * \brief The ListPointer class - class that inherits from the List class. Represent list on pointers.
  */
-class ListPointer : public ListsComparator
+class ListPointer
 {
 public:
     ListPointer();
@@ -29,24 +29,28 @@ template <typename T>
 ListPointer<T>::ListPointer()
     :size(0)
 {
-    head = new ElementOfList<T>();
+    head = new ElementOfList<T>;
 }
 
 template <typename T>
 bool ListPointer<T>::add(const T &value)
 {
-    ElementOfList<T> *element = head;
-    if (element)
-    {
-        while (element->next && element->key > value)
-        {
-            element = element->next;
-        }
-    }
     ElementOfList<T> *auxiliary = new ElementOfList<T>(value);
-    auxiliary->next = element->next;
-    auxiliary->previous = element;
-    element->next = auxiliary;
+    if (size == 0)
+    {
+        head = auxiliary;
+    }
+    else
+    {
+        ElementOfList<T> *element = head;
+        while (element->getNext() && element->getKey() > value)
+        {
+            element = element->getNext();
+        }
+        auxiliary->setNext(element->getNext());
+        auxiliary->setPrevious(element);
+        element->setNext(auxiliary);
+    }
     ++size;
     return true;
 }
@@ -57,25 +61,25 @@ bool ListPointer<T>::remove(const T &value)
     if (head)
     {
         ElementOfList<T> *element = head;
-        if(element->next)
+        if(element->getNext())
         {
-            while(element->next && element->key != value)
+            while(element->getNext() && element->getKey() != value)
             {
-                element = element->next;
+                element = element->getNext();
             }
-            if(element->key != value)
+            if(element->getKey() != value)
             {
                 return false;
             }
             else
             {
-                element->previous->next = nullptr;
+                element->getPrevious()->getNext() = nullptr;
                 delete element;
                 --size;
                 return true;
             }
         }
-        else if(head->key == value)
+        else if(head->getKey() == value)
         {
             delete head;
             return true;
@@ -97,11 +101,11 @@ bool ListPointer<T>::exist(const T &value)
     ElementOfList<T> *auxiliary = head;
     while (auxiliary)
     {
-        if (auxiliary->key == value)
+        if (auxiliary->getKey() == value)
         {
             return true;
         }
-        auxiliary = auxiliary->next;
+        auxiliary = auxiliary->getNext();
     }
     return false;
 }
@@ -123,7 +127,7 @@ bool ListPointer<T>::removeList(ElementOfList<T> *head) const
 {
     while (head)
     {
-        ElementOfList<T> *nextHead = head->next;
+        ElementOfList<T> *nextHead = head->getNext();
         delete head;
         head = nextHead;
     }
