@@ -16,11 +16,9 @@ template <typename T>
 class SortedSet : public ListPointer<ListPointer<T> *>
 {
 public:
-    SortedSet(){}
     bool isEmpty();
-    ListPointer<T> *MAX();
-    ListPointer<T> *MIN();
-    ~SortedSet(){}
+    ListPointer<T> *max();
+    ListPointer<T> *min();
 };
 
 template <typename T>
@@ -30,7 +28,7 @@ bool SortedSet<T>::isEmpty()
 }
 
 template <typename T>
-ListPointer<T> *SortedSet<T>::MAX()
+ListPointer<T> *SortedSet<T>::max()
 {
     if (this->isEmpty())
     {
@@ -51,7 +49,7 @@ ListPointer<T> *SortedSet<T>::MAX()
 }
 
 template <typename T>
-ListPointer<T> *SortedSet<T>::MIN()
+ListPointer<T> *SortedSet<T>::min()
 {
     if (this->isEmpty())
     {

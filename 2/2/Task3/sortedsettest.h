@@ -56,13 +56,13 @@ private slots:
     {
         try
         {
-            set->MAX();
+            set->max();
         }
         catch(EmptySet &)
         {
             QVERIFY(true);
         }
-        QVERIFY_EXCEPTION_THROWN(set->MAX(), EmptySet);
+        QVERIFY_EXCEPTION_THROWN(set->max(), EmptySet);
     }
 
     void findMaxTest()
@@ -74,6 +74,6 @@ private slots:
         secondList->add(3);
         set->add(firstList);
         set->add(secondList);
-        QCOMPARE(set->MAX(), secondList);
+        QCOMPARE(set->max(), secondList);
     }
 };
