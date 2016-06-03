@@ -33,16 +33,7 @@ private slots:
 
     void DivisionByZeroTest()
     {
-        try
-        {
-            tree = new Tree("( / 2 0 )");
-            tree->compute();
-            QVERIFY2(false, "Exception was not thrown");
-        }
-        catch (DivisionByZeroError &)
-        {
-            QVERIFY(true);
-        }
+        tree = new Tree("( / 2 0 )");
         QVERIFY_EXCEPTION_THROWN(tree->compute(), DivisionByZeroError);
     }
 };
