@@ -22,38 +22,42 @@ MainWindow::~MainWindow()
     deleteButtons();
     delete signalMapper;
     delete game;
-    delete ui->buttonLayout;
+    delete ui->baseLayout;
     delete ui;
 
 }
 
 void MainWindow::createField()
 {
-    QPushButton *currentButton = nullptr;
+    ResizedFontPushButton *currentButton = nullptr;
     game = new TicTacToe(fieldSize);
+    buttonLayout = new QGridLayout;
+    ui->baseLayout->addLayout(buttonLayout, 1, 1);
     int k = -1;
 
     for (int i = 0; i < fieldSize; ++i)
     {
         for (int j = 0; j < fieldSize; ++j)
         {
-            currentButton = new QPushButton;
+            currentButton = new ResizedFontPushButton;
             currentButton->setObjectName(QString::number(++k));
+            currentButton->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
             buttons.push_back(currentButton);
-            currentButton->setFixedSize(20, 20);
             connect(currentButton, SIGNAL(clicked()), signalMapper, SLOT(map()));
             signalMapper->setMapping(currentButton, currentButton);
-            ui->buttonLayout->addWidget(currentButton, i % fieldSize + 1, j % fieldSize);
+            buttonLayout->addWidget(currentButton, i % fieldSize + 1, j % fieldSize);
         }
     }
 
-    currentButton = new QPushButton("New game");
+    currentButton = new ResizedFontPushButton;
+    currentButton->setText("New game");
+    currentButton->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     connect(currentButton, SIGNAL(clicked()), game, SLOT(newGame()));
     connect(currentButton, SIGNAL(clicked()), this, SLOT(newGame()));
-    ui->buttonLayout->addWidget(currentButton, fieldSize + 1, 0, 1, fieldSize);
+    buttonLayout->addWidget(currentButton, fieldSize + 1, 0, 1, fieldSize);
 
     label = new QLabel;
-    ui->buttonLayout->addWidget(label, fieldSize + 2, 0);
+    ui->baseLayout->addWidget(label, 2, 1);
 
     connect(game, SIGNAL(gameOver(QString)), this, SLOT(showResult(QString)));
 
@@ -87,6 +91,6 @@ void MainWindow::deleteButtons()
         delete button;
     }
     buttons.clear();
-    QPushButton *currentButton = this->findChild<QPushButton *>();
+    ResizedFontPushButton *currentButton = this->findChild<ResizedFontPushButton *>();
     delete currentButton;
 }

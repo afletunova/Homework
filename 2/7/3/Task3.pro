@@ -16,10 +16,12 @@ CONFIG += c++11
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    tictactoe.cpp
+    tictactoe.cpp \
+    resizedfontpushbutton.cpp
 
 HEADERS  += mainwindow.h \
     tictactoe.h \
-    tictactoetest.h
+    tictactoetest.h \
+    resizedfontpushbutton.h
 
 FORMS    += mainwindow.ui

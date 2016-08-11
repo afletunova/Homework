@@ -8,6 +8,7 @@
 #include <QLabel>
 
 #include "tictactoe.h"
+#include "resizedfontpushbutton.h"
 
 namespace Ui {
 class MainWindow;
@@ -24,7 +25,8 @@ public:
 private:
     Ui::MainWindow *ui;
     QSignalMapper *signalMapper;
-    QVector<QPushButton *> buttons;
+    QVector<ResizedFontPushButton *> buttons;
+    QGridLayout *buttonLayout;
     TicTacToe *game;
     QLabel *label;
     void createField();
