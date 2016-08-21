@@ -57,6 +57,9 @@ void MainWindow::createField()
     buttonLayout->addWidget(currentButton, fieldSize + 1, 0, 1, fieldSize);
 
     label = new QLabel;
+    QFont font;
+    font.setPointSize(14);
+    label->setFont(font);
     ui->baseLayout->addWidget(label, 2, 1);
 
     connect(game, SIGNAL(gameOver(QString)), this, SLOT(showResult(QString)));
