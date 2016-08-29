@@ -1,7 +1,7 @@
 #include "client.h"
 
 Client::Client()
-    :serverSocket(nullptr), hostIP("\0"), port(0)
+    :serverSocket(nullptr)
 {}
 
 Client::~Client()
@@ -9,7 +9,7 @@ Client::~Client()
     delete serverSocket;
 }
 
-bool Client::connection()
+bool Client::connection(const QString &hostIP, quint16 hostPort)
 {
     if (serverSocket)
     {
@@ -20,15 +20,15 @@ bool Client::connection()
     connect(serverSocket, &QTcpSocket::readyRead, this, &Client::getMessage);
     connect(serverSocket, &QTcpSocket::disconnected, this, &Client::connectionTerminated);
 
-    serverSocket->connectToHost(hostIP, port);
+    serverSocket->connectToHost(hostIP, hostPort);
 
     if (!serverSocket->waitForConnected())
     {
-        emit infoMessage("Cannot connect.");
+        emit informationMessage("Cannot connect.");
         return false;
     }
 
-    emit infoMessage("Connected.");
+    emit informationMessage("Connected.");
     return true;
 }
 
@@ -41,12 +41,22 @@ bool Client::sendMessage(const QString &message)
 {
     if (!serverSocket)
     {
-        emit infoMessage("Error of connection.");
+        emit informationMessage("Error of connection.");
         return false;
     }
 
     send(serverSocket, message);
     return true;
+}
+
+QString Client::getNickname()
+{
+    return nickname;
+}
+
+void Client::setNickname(const QString &newNickname)
+{
+    nickname = newNickname;
 }
 
 void Client::getMessage()
@@ -56,12 +66,7 @@ void Client::getMessage()
 
 void Client::connectionTerminated()
 {
-    emit infoMessage("Server is disconected.");
-}
-
-QString Client::getNickname()
-{
-    return nickname;
+    emit informationMessage("Server is disconected.");
 }
 
 QString Client::getServerNickname()

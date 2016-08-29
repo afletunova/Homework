@@ -39,7 +39,7 @@
     <property name="geometry">
      <rect>
       <x>290</x>
-      <y>40</y>
+      <y>80</y>
       <width>91</width>
       <height>21</height>
      </rect>
@@ -52,7 +52,7 @@
     <property name="geometry">
      <rect>
       <x>290</x>
-      <y>70</y>
+      <y>110</y>
       <width>91</width>
       <height>21</height>
      </rect>
@@ -61,7 +61,7 @@
      <string>Disconnect</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="IPLine">
     <property name="geometry">
      <rect>
       <x>280</x>
@@ -82,6 +82,16 @@
     </property>
     <property name="text">
      <string>send</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="portLine">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>40</y>
+      <width>113</width>
+      <height>21</height>
+     </rect>
     </property>
    </widget>
   </widget>

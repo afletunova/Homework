@@ -23,6 +23,6 @@ private:
 private slots:
     void sendMessage();
     void getMessage(const QString &message);
-//    void getInfo(const QString &newMessage);
+    void getInformationMessage(const QString &infoMessage);
     void connection();
 };

@@ -13,5 +13,5 @@ public:
 
 signals:
     void messageRecd(const QString &);
-    void infoMessage(const QString &);
+    void informationMessage(const QString &);
 };

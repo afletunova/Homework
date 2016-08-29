@@ -12,17 +12,16 @@ public:
     explicit Client();
     ~Client();
 
-    bool connection();
+    bool connection(const QString &IP, quint16 hostPort);
     void disconnection();
     bool sendMessage(const QString &message);
 
     QString getNickname();
+    void setNickname(const QString &newNickname);
     QString getServerNickname();
 
 private:
     QTcpSocket *serverSocket;
-    QString hostIP;
-    quint16 port;
     QString nickname;
     QString serverNickname;
 
