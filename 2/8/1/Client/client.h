@@ -15,18 +15,16 @@ public:
     bool connection(const QString &IP, quint16 hostPort);
     void disconnection();
     bool sendMessageToServer(const QString &message);
+    bool sendNicknameToServer(const QString &nickname);
 
     void setNickname(const QString &newNickname);
     QString getMyNickname();
-    QString getServerNickname();
 
 private:
     QTcpSocket *serverSocket;
     QString nickname;
-    QString serverNickname;
 
 private slots:
     void getMessageFromServer();
     void connectionTerminated();
-    void getNewServerNickname();
 };

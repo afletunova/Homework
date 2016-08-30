@@ -6,12 +6,11 @@ class Chat : public QObject
 {
     Q_OBJECT
 public:
-    explicit Chat(QObject *parent = 0);
+    explicit Chat();
 
     void sendMessage(QTcpSocket *tcpSocket, const QString &message);
     void sendNickname(QTcpSocket *tcpSocket, const QString &nickname);
     void getMessage(QTcpSocket *tcpSocket);
-    void getNickname(QTcpSocket *tcpSocket);
 
 signals:
     void changeNickname(const QString &);

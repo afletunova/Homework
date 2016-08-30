@@ -17,8 +17,8 @@ ClientWindow::ClientWindow(QWidget *parent) :
     ui->IPLine->setPlaceholderText("Enter IP...");
     ui->portLine->setPlaceholderText("Enter port...");
 
-    connect(ui->connectButton, &QPushButton::clicked, this, &ClientWindow::connection);
     connect(ui->disconnectButton, &QPushButton::clicked, &client, &Client::disconnection);
+    connect(ui->connectButton, &QPushButton::clicked, this, &ClientWindow::connection);
     connect(ui->sendButton, &QPushButton::clicked, this, &ClientWindow::sendMessage);
 
     connect(&client, &Client::informationMessage, this, &ClientWindow::getInformationMessage);
@@ -47,22 +47,28 @@ ClientWindow::~ClientWindow()
 
 void ClientWindow::sendMessage()
 {
-    QString message = ui->textEdit->toPlainText();
+    QString newMessage = ui->textEdit->toPlainText();
     ui->textEdit->setText("\0");
 
-    if (!client.sendMessageToServer(message))
+    if (!client.sendMessageToServer(newMessage))
     {
         return;
     }
 
-    dialogHistoryPlainTextEdit->appendPlainText(client.getMyNickname());
-    dialogHistoryPlainTextEdit->appendPlainText(QString(": %1").arg(message));
+    dialogHistoryPlainTextEdit->appendPlainText(client.getMyNickname() + ": " + newMessage);
 }
 
-void ClientWindow::getMessage(const QString &message)
+void ClientWindow::sendNickname()
 {
-    dialogHistoryPlainTextEdit->appendPlainText(client.getServerNickname());
-    dialogHistoryPlainTextEdit->appendPlainText(QString(": %1").arg(message));
+   if (!client.sendNicknameToServer(client.getMyNickname()))
+   {
+       return;
+   }
+}
+
+void ClientWindow::getMessage(const QString &newMessage)
+{
+    dialogHistoryPlainTextEdit->appendPlainText(serverNickname + ": " + newMessage);
 }
 
 void ClientWindow::getNickname(const QString &newServerNickname)
