@@ -5,12 +5,14 @@
 
 ClientWindow::ClientWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::ClientWindow)
+    ui(new Ui::ClientWindow),
+    dialogHistoryPlainTextEdit(nullptr),
+    serverNickname("\0")
 {
     ui->setupUi(this);
 
-    plainTextEdit = new PlainTextEditWithLimits;
-    ui->plaintTextEditLayout->addWidget(plainTextEdit);
+    dialogHistoryPlainTextEdit = new PlainTextEditWithLimits;
+    ui->plaintTextEditLayout->addWidget(dialogHistoryPlainTextEdit);
 
     ui->IPLine->setPlaceholderText("Enter IP...");
     ui->portLine->setPlaceholderText("Enter port...");
@@ -21,6 +23,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
 
     connect(&client, &Client::informationMessage, this, &ClientWindow::getInformationMessage);
     connect(&client, &Client::messageRecd, this, &ClientWindow::getMessage);
+    connect(&client, &Client::changeNickname, this, &ClientWindow::getNickname);
 
     bool nicknameEntered;
     client.setNickname(QInputDialog::getText(0,
@@ -39,7 +42,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
 ClientWindow::~ClientWindow()
 {
     delete ui;
-    delete plainTextEdit;
+    delete dialogHistoryPlainTextEdit;
 }
 
 void ClientWindow::sendMessage()
@@ -47,24 +50,29 @@ void ClientWindow::sendMessage()
     QString message = ui->textEdit->toPlainText();
     ui->textEdit->setText("\0");
 
-    if (!client.sendMessage(message))
+    if (!client.sendMessageToServer(message))
     {
         return;
     }
 
-    plainTextEdit->appendPlainText(client.getNickname());
-    plainTextEdit->appendPlainText(QString(": %1").arg(message));
+    dialogHistoryPlainTextEdit->appendPlainText(client.getMyNickname());
+    dialogHistoryPlainTextEdit->appendPlainText(QString(": %1").arg(message));
 }
 
 void ClientWindow::getMessage(const QString &message)
 {
-    plainTextEdit->appendPlainText(client.getServerNickname());
-    plainTextEdit->appendPlainText(QString(": %1").arg(message));
+    dialogHistoryPlainTextEdit->appendPlainText(client.getServerNickname());
+    dialogHistoryPlainTextEdit->appendPlainText(QString(": %1").arg(message));
+}
+
+void ClientWindow::getNickname(const QString &newServerNickname)
+{
+    serverNickname = newServerNickname;
 }
 
 void ClientWindow::getInformationMessage(const QString &infoMessage)
 {
-    plainTextEdit->appendPlainText(QString("-> %1").arg(infoMessage));
+    dialogHistoryPlainTextEdit->appendPlainText(QString("-> %1").arg(infoMessage));
 }
 
 void ClientWindow::connection()

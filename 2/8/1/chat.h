@@ -8,10 +8,13 @@ class Chat : public QObject
 public:
     explicit Chat(QObject *parent = 0);
 
-    void send(QTcpSocket *tcpSocket, const QString &message);
-    void get(QTcpSocket *tcpSocket);
+    void sendMessage(QTcpSocket *tcpSocket, const QString &message);
+    void sendNickname(QTcpSocket *tcpSocket, const QString &nickname);
+    void getMessage(QTcpSocket *tcpSocket);
+    void getNickname(QTcpSocket *tcpSocket);
 
 signals:
+    void changeNickname(const QString &);
     void messageRecd(const QString &);
     void informationMessage(const QString &);
 };

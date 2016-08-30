@@ -37,7 +37,7 @@ void Client::disconnection()
     serverSocket->disconnectFromHost();
 }
 
-bool Client::sendMessage(const QString &message)
+bool Client::sendMessageToServer(const QString &message)
 {
     if (!serverSocket)
     {
@@ -45,11 +45,11 @@ bool Client::sendMessage(const QString &message)
         return false;
     }
 
-    send(serverSocket, message);
+    sendMessage(serverSocket, message);
     return true;
 }
 
-QString Client::getNickname()
+QString Client::getMyNickname()
 {
     return nickname;
 }
@@ -59,14 +59,19 @@ void Client::setNickname(const QString &newNickname)
     nickname = newNickname;
 }
 
-void Client::getMessage()
+void Client::getMessageFromServer()
 {
-    get(serverSocket);
+    getMessage(serverSocket);
 }
 
 void Client::connectionTerminated()
 {
     emit informationMessage("Server is disconected.");
+}
+
+void Client::getNewServerNickname()
+{
+    getNickname(serverSocket);
 }
 
 QString Client::getServerNickname()
