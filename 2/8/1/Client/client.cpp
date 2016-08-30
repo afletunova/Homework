@@ -63,7 +63,7 @@ bool Client::sendNicknameToServer(const QString &nickname)
     return true;
 }
 
-QString Client::getMyNickname()
+QString Client::getMyNickname() const
 {
     return nickname;
 }

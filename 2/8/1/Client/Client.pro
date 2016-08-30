@@ -22,7 +22,7 @@ SOURCES += main.cpp\
 
 HEADERS  += clientwindow.h \
     client.h \
-    plaintexteditwithlimits.h \
-    ../chat.h
+    ../chat.h \
+    ../plaintexteditwithlimits.h
 
 FORMS    += clientwindow.ui

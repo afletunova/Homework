@@ -58,14 +58,6 @@ void ClientWindow::sendMessage()
     dialogHistoryPlainTextEdit->appendPlainText(client.getMyNickname() + ": " + newMessage);
 }
 
-void ClientWindow::sendNickname()
-{
-   if (!client.sendNicknameToServer(client.getMyNickname()))
-   {
-       return;
-   }
-}
-
 void ClientWindow::getMessage(const QString &newMessage)
 {
     dialogHistoryPlainTextEdit->appendPlainText(serverNickname + ": " + newMessage);
