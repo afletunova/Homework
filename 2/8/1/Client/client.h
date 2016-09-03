@@ -20,9 +20,8 @@ public:
      * \brief connection - try to connect with server and return emit with information message about connection.
      * \param IP
      * \param hostPort
-     * \return
      */
-    bool connection(const QString &IP, quint16 hostPort);
+    void connection(const QString &IP, quint16 hostPort);
     /*!
      * \brief disconnection - called if user want to disconnect from server.
      */
@@ -64,4 +63,8 @@ private slots:
      * \brief connectionTerminated - notifies that connection has been disconnected.
      */
     void connectionTerminated();
+    /*!
+     * \brief emitInformationMessage - emit information message in case of error of connection with server.
+     */
+    void emitErrorMessage(QAbstractSocket::SocketError socketError);
 };

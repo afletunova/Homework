@@ -6,10 +6,11 @@ Client::Client()
 
 Client::~Client()
 {
+    disconnection();
     delete serverSocket;
 }
 
-bool Client::connection(const QString &hostIP, quint16 hostPort)
+void Client::connection(const QString &hostIP, quint16 hostPort)
 {
     if (serverSocket)
     {
@@ -17,21 +18,21 @@ bool Client::connection(const QString &hostIP, quint16 hostPort)
     }
     serverSocket = new QTcpSocket;
 
+    serverSocket->connectToHost(hostIP, hostPort);
+
     connect(serverSocket, &QTcpSocket::readyRead, this, &Client::getMessageFromServer);
     connect(serverSocket, &QTcpSocket::disconnected, this, &Client::connectionTerminated);
-
-    serverSocket->connectToHost(hostIP, hostPort);
+    connect(serverSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(emitErrorMessage(QAbstractSocket::SocketError)));
 
     if (!serverSocket->waitForConnected())
     {
         emit informationMessage("Cannot connect.");
-        return false;
+        return;
     }
 
     sendNicknameToServer(nickname);
 
     emit informationMessage("Connected.");
-    return true;
 }
 
 void Client::disconnection()
@@ -80,6 +81,31 @@ void Client::getMessageFromServer()
 
 void Client::connectionTerminated()
 {
-    emit informationMessage("Server is disconected.");
+    emit informationMessage("Server is disconnected.");
+}
+
+void Client::emitErrorMessage(QAbstractSocket::SocketError socketError)
+{
+    switch (socketError)
+    {
+    case QAbstractSocket::RemoteHostClosedError:
+    {
+        break;
+    }
+    case QAbstractSocket::HostNotFoundError:
+    {
+        emit informationMessage("Error: The host was not found.");
+        break;
+    }
+    case QAbstractSocket::ConnectionRefusedError:
+    {
+        emit informationMessage("Error: The connection was refused by the peer.");
+        break;
+    }
+    default:
+    {
+        emit informationMessage("Error: The following error occured: " + serverSocket->errorString());
+    }
+    }
 }
 

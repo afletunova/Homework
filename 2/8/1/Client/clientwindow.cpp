@@ -17,6 +17,9 @@ ClientWindow::ClientWindow(QWidget *parent) :
     ui->IPLine->setPlaceholderText("Enter IP...");
     ui->portLine->setPlaceholderText("Enter port...");
 
+    setTabOrder(ui->IPLine, ui->portLine);
+    setTabOrder(ui->portLine, ui->textEdit);
+
     connect(ui->disconnectButton, &QPushButton::clicked, &client, &Client::disconnection);
     connect(ui->connectButton, &QPushButton::clicked, this, &ClientWindow::connection);
     connect(ui->sendButton, &QPushButton::clicked, this, &ClientWindow::sendMessage);
@@ -41,8 +44,8 @@ ClientWindow::ClientWindow(QWidget *parent) :
 
 ClientWindow::~ClientWindow()
 {
-    delete ui;
     delete dialogHistoryPlainTextEdit;
+    delete ui;
 }
 
 void ClientWindow::sendMessage()

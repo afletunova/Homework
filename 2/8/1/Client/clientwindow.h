@@ -48,5 +48,5 @@ private slots:
     /*!
      * \brief connection - called if user want to connect to server and clicked button "Connect"
      */
-    void connection();
+    void connection();  
 };

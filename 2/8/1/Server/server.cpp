@@ -25,7 +25,7 @@ Server::Server()
 Server::~Server()
 {
     delete tcpServer;
-    delete clientSocket;
+    cleanClient();
 }
 
 bool Server::sendMessageToClient(const QString &message)
