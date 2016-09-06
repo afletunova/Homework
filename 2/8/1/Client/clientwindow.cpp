@@ -11,7 +11,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    dialogHistoryPlainTextEdit = new PlainTextEditWithLimits;
+    dialogHistoryPlainTextEdit = new PlainTextEditWithLimits(this);
     ui->plaintTextEditLayout->addWidget(dialogHistoryPlainTextEdit);
 
     ui->IPLine->setPlaceholderText("Enter IP...");
@@ -44,7 +44,6 @@ ClientWindow::ClientWindow(QWidget *parent) :
 
 ClientWindow::~ClientWindow()
 {
-    delete dialogHistoryPlainTextEdit;
     delete ui;
 }
 

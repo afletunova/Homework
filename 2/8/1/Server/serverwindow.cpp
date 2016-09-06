@@ -11,7 +11,7 @@ ServerWindow::ServerWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    dialogHistoryPlainTextEdit = new PlainTextEditWithLimits;
+    dialogHistoryPlainTextEdit = new PlainTextEditWithLimits(this);
     ui->dialogHistoryGridLayout->addWidget(dialogHistoryPlainTextEdit);
 
     ui->IPLine->setText(server.getIP());
@@ -42,7 +42,6 @@ ServerWindow::ServerWindow(QWidget *parent) :
 ServerWindow::~ServerWindow()
 {
     delete ui;
-    delete dialogHistoryPlainTextEdit;
 }
 
 void ServerWindow::sendMessage()

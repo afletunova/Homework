@@ -24,8 +24,7 @@ Server::Server()
 
 Server::~Server()
 {
-    delete tcpServer;
-    cleanClient();
+    tcpServer->close();
 }
 
 bool Server::sendMessageToClient(const QString &message)
@@ -104,5 +103,6 @@ void Server::connectionTerminated()
 
 void Server::cleanClient()
 {
+    clientSocket->close();
     clientSocket = nullptr;
 }

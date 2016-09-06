@@ -10,6 +10,11 @@ class PlainTextEditWithLimits : public QPlainTextEdit
 {
     Q_OBJECT
 public:
+    PlainTextEditWithLimits(QWidget *parent)
+    {
+        this->setParent(parent);
+    }
+    ~PlainTextEditWithLimits(){}
     void keyPressEvent(QKeyEvent *){}
     void contextMenuEvent(QContextMenuEvent *){}
 };

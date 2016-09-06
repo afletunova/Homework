@@ -7,7 +7,7 @@ Client::Client()
 Client::~Client()
 {
     disconnection();
-    delete serverSocket;
+    serverSocket->close();
 }
 
 void Client::connection(const QString &hostIP, quint16 hostPort)
