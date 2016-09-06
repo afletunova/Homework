@@ -6,7 +6,6 @@
 ClientWindow::ClientWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::ClientWindow),
-    dialogHistoryPlainTextEdit(nullptr),
     serverNickname("\0")
 {
     ui->setupUi(this);
