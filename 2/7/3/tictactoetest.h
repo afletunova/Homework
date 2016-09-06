@@ -13,13 +13,15 @@ private:
     TicTacToe *game;
     QPushButton *button;
     QVector<QPushButton *> buttons;
+    int size;
 
 private slots:
 
     void init()
     {
-        game = new TicTacToe(3);
-        for (int i = 0; i < 9; ++i)
+        size = 3;
+        game = new TicTacToe(size);
+        for (int i = 0; i < size * size; ++i)
         {
             button = new QPushButton;
             button->setObjectName(QString::number(i));

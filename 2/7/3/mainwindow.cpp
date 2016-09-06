@@ -79,6 +79,10 @@ void MainWindow::newGame()
 
 void MainWindow::showResult(const QString &result)
 {
+    for (auto button: buttons)
+    {
+        button->setEnabled(false);
+    }
     label->setText(result);
 }
 
@@ -89,7 +93,7 @@ void MainWindow::changed(QWidget *button)
 
 void MainWindow::deleteButtons()
 {
-    for (auto button: this->buttons)
+    for (auto button: buttons)
     {
         delete button;
     }

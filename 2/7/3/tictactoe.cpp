@@ -9,10 +9,10 @@ TicTacToe::TicTacToe(int size)
         field[i] = new char[size];
     }
 
-    idarray = new int*[size];
+    idArray = new int*[size];
     for (int i = 0; i < size; ++i)
     {
-        idarray[i] = new int[size];
+        idArray[i] = new int[size];
     }
 
     int k = -1;
@@ -20,7 +20,7 @@ TicTacToe::TicTacToe(int size)
     {
         for (int j = 0; j < size; ++j)
         {
-            idarray[i][j] = ++k;
+            idArray[i][j] = ++k;
         }
     }
 
@@ -37,9 +37,9 @@ TicTacToe::~TicTacToe()
 
     for (int i = 0; i < size; ++i)
     {
-        delete[] idarray[i];
+        delete[] idArray[i];
     }
-    delete[] idarray;
+    delete[] idArray;
 }
 
 void TicTacToe::newGame()
@@ -229,13 +229,13 @@ void TicTacToe::getParameters(int &line, int &column, int id)
         column = 0;
         while (column < size)
         {
-            if (idarray[line][column] == id)
+            if (idArray[line][column] == id)
             {
                 break;
             }
             ++column;
         }
-        if (idarray[line][column] == id)
+        if (idArray[line][column] == id)
         {
             break;
         }

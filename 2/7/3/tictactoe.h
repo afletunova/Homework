@@ -33,7 +33,7 @@ private:
     /*!
      * \brief idarray - array to find the position of the сlicked button.
      */
-    int **idarray;
+    int **idArray;
     char **field;
     char winnerSymbol;
 
