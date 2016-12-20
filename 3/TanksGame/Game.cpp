@@ -1,64 +1,59 @@
 #include "Game.h"
+#include "Tank.h"
 
-void Game::Start()
-{
-    if (gameState != Uninitialized)
-        return;
+void Game::start() {
 
-    mainWindow.create(sf::VideoMode(1024,720), "Tanks");
+    mainWindow.create(sf::VideoMode(width, height), "Tanks");
 
+    Tank *player = new Tank();
+    player->setPosition(0, height / 2);
 
-    player.load("image.png");
-    player.setPosition((1024 / 2), 300);
+    gameWorld.addPlayer(player);
 
     gameState = Game::Playing;
-    while (mainWindow.isOpen())
-    {
+    while (mainWindow.isOpen()) {
         gameLoop();
     }
 
     mainWindow.close();
 }
 
-void Game::gameLoop()
-{
+void Game::gameLoop() {
     sf::Event event;
-    while (mainWindow.pollEvent(event))
-    {
-        switch (gameState)
-        {
-            case Game::Playing:
-            {
-                mainWindow.clear(sf::Color::White);
-                mainWindow.draw(player);
-                mainWindow.display();
+    while (mainWindow.pollEvent(event)) {
+        if (event.type == sf::Event::Closed)
+            mainWindow.close();
+        if (event.type == sf::Event::LostFocus)
+            gameState = Game::Paused;
 
-                if (event.type == sf::Event::Closed)
-                {
-                    gameState = Game::Exiting;
-                }
-                break;
+        break;
+    }
+    switch (gameState) {
+        case Game::Playing:
+
+            while (accumulator > ups) {
+                accumulator -= ups;
+                gameWorld.updateAll(ups);
             }
 
-            case Game::Exiting:
-                mainWindow.close();
-                break;
 
-            default: break;
-        }
+            mainWindow.clear(sf::Color::White);
+            gameWorld.drawAll(mainWindow);
+            mainWindow.display();
+
+            accumulator += clock.restart();
+            break;
+
+
+        case Game::Paused:
+            if (event.type == sf::Event::GainedFocus)
+                gameState = Game::Playing;
+            break;
+
+        default:
+            break;
     }
-}
-
-void Game::updatePlayer()
-{
 
 }
 
-void Game::update()
-{
-    updatePlayer();
-}
 
-sf::RenderWindow Game::mainWindow;
-Tank Game::player;
-Game::GameState Game::gameState = Game::Uninitialized;

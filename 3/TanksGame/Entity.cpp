@@ -6,20 +6,32 @@ Entity::Entity()
 Entity::~Entity()
 {}
 
-void Entity::draw(sf::RenderTarget &target, sf::RenderStates states) const
-{
-    states.transform *= getTransform();
-    states.texture = &texture;
-    target.draw(sprite);
-}
-
 void Entity::load(const std::string filename)
 {
-    texture.loadFromFile(filename);
+    if (!texture.loadFromFile(filename))
+    {
+        return;
+    }
     sprite.setTexture(texture);
 }
 
-void Entity::setPosition(const int x, const int y)
+void Entity::setPosition(const float x, const float y)
 {
     sprite.setPosition(x, y);
+}
+
+void Entity::update(float elapsedTime)
+{}
+
+sf::Vector2f Entity::getEntityPosition() const
+{
+    return sf::Vector2f();
+}
+
+sf::Sprite &Entity::getSprite() {
+    return sprite;
+}
+
+void Entity::draw(sf::RenderWindow &window) {
+    window.draw(sprite);
 }

@@ -1,24 +1,27 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "Tank.h"
+#include "GameWorld.h"
 
 class Game
 {
 public:
-    static void Start();
+    void start();
+
+    const static int width = 1024;
+    const static int height = 720;
 
 private:
-    static void gameLoop();
-    static void update();
+    void gameLoop();
 
-    static void updatePlayer();
+    sf::Clock clock;
+    sf::Time accumulator = sf::Time::Zero;
+    sf::Time ups = sf::seconds(1.f / 60.f);
 
-    static sf::RenderWindow mainWindow;
-    static Tank player;
+    sf::RenderWindow mainWindow;
+    GameWorld gameWorld;
 
-    enum GameState { Uninitialized, ShowingSplash, Paused,
-        ShowingMenu, Playing, Exiting };
+    enum GameState { Uninitialized, Playing, Paused };
 
-    static GameState gameState;
+    GameState gameState;
 };
 

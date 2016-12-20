@@ -4,9 +4,11 @@ project(TanksGame)
 set(CMAKE_CXX_STANDARD 11)
 
 set(SOURCE_FILES
-        main.cpp Game.cpp Game.h Entity.cpp Entity.h GameWorld.cpp GameWorld.h Game.cpp Game.h Tank.cpp Tank.h Algorithm.cpp Algorithm.h)
+        main.cpp Game.cpp Game.h Entity.cpp Entity.h GameWorld.cpp GameWorld.h Game.cpp Game.h Tank.cpp Tank.h Terrain.cpp Terrain.h)
 set(RESOURCE_FILES image.png)
 add_executable(TanksGame ${SOURCE_FILES})
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
 
 
 
