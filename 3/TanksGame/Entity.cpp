@@ -23,15 +23,18 @@ void Entity::setPosition(const float x, const float y)
 void Entity::update(float elapsedTime)
 {}
 
-sf::Vector2f Entity::getEntityPosition() const
-{
-    return sf::Vector2f();
-}
-
 sf::Sprite &Entity::getSprite() {
     return sprite;
 }
 
 void Entity::draw(sf::RenderWindow &window) {
     window.draw(sprite);
+}
+
+const float Entity::getPositionX() {
+    return getSprite().getPosition().x;
+}
+
+const float Entity::getPositionY() {
+    return getSprite().getPosition().y;
 }

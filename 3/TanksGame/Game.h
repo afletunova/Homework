@@ -7,8 +7,8 @@ class Game
 public:
     void start();
 
-    const static int width = 1024;
-    const static int height = 720;
+    const static int width = 4096;
+    const static int height = 1024;
 
 private:
     void gameLoop();
@@ -20,7 +20,7 @@ private:
     sf::RenderWindow mainWindow;
     GameWorld gameWorld;
 
-    enum GameState { Uninitialized, Playing, Paused };
+    enum GameState { Playing, Paused };
 
     GameState gameState;
 };

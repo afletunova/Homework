@@ -6,9 +6,15 @@ void Game::start() {
     mainWindow.create(sf::VideoMode(width, height), "Tanks");
 
     Tank *player = new Tank();
-    player->setPosition(0, height / 2);
+    player->setPosition(width / 2, height / 2);
+
+    Terrain *terrain = new Terrain();
+    terrain->setPosition(0, height / 2);
 
     gameWorld.addPlayer(player);
+    gameWorld.setCamera(height);
+    gameWorld.addTerrain(terrain);
+
 
     gameState = Game::Playing;
     while (mainWindow.isOpen()) {

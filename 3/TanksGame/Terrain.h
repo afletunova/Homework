@@ -1,23 +1,23 @@
 #pragma once
 
-#include <array>
+#include <SFML/Graphics.hpp>
 
-class Terrain
+#include <array>
+#include "Entity.h"
+
+class Terrain : public Entity
 {
 public:
     Terrain();
     ~Terrain();
 
-    void draw();
-
+    void draw(sf::RenderWindow &window);
 private:
-    const static int size = 1024;
-    std::array<int, size> vertices;
+    const static int size = 4096;
+    std::array<unsigned int, size> vertices;
 
-    void generateHeights(const int step, const int middle);
+    void generateHeights();
 
-    const int height = 300;
-    const int minStep = 8;
-    const int percent = 25;
+    const unsigned int height = 300;
 };
 
