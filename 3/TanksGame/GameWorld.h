@@ -18,6 +18,9 @@ public:
     void updateAll(sf::Time);
     void drawAll(sf::RenderWindow &window);
 
+    Terrain *getTerrain();
+    sf::View &getView();
+
 private:
     Tank *player;
     Terrain *terrain;

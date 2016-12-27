@@ -5,16 +5,15 @@ void Game::start() {
 
     mainWindow.create(sf::VideoMode(width, height), "Tanks");
 
-    Tank *player = new Tank();
+    Tank *player = new Tank(world);
     player->setPosition(width / 2, height / 2);
 
-    Terrain *terrain = new Terrain();
+    Terrain *terrain = new Terrain(world);
     terrain->setPosition(0, height / 2);
 
-    gameWorld.addPlayer(player);
-    gameWorld.setCamera(height);
-    gameWorld.addTerrain(terrain);
-
+    world->addPlayer(player);
+    world->setCamera(height);
+    world->addTerrain(terrain);
 
     gameState = Game::Playing;
     while (mainWindow.isOpen()) {
@@ -39,12 +38,12 @@ void Game::gameLoop() {
 
             while (accumulator > ups) {
                 accumulator -= ups;
-                gameWorld.updateAll(ups);
+                world->updateAll(ups);
             }
 
 
             mainWindow.clear(sf::Color::White);
-            gameWorld.drawAll(mainWindow);
+            world->drawAll(mainWindow);
             mainWindow.display();
 
             accumulator += clock.restart();
@@ -60,6 +59,14 @@ void Game::gameLoop() {
             break;
     }
 
+}
+
+Game::Game(): world(new GameWorld) {
+
+}
+
+Game::~Game() {
+    delete world;
 }
 
 

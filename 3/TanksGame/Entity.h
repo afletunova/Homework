@@ -4,11 +4,15 @@
 #include <iostream>
 #include <list>
 
+class GameWorld;
+
 class Entity
 {
 public:
-    Entity();
-    virtual ~Entity();
+    Entity(GameWorld *world);
+    virtual ~Entity(){}
+
+    GameWorld *getWorld();
 
     virtual void load(const std::string filename);
     virtual void setPosition(const float x, const float y);
@@ -25,4 +29,6 @@ private:
 
     sf::Sprite sprite;
     sf::Texture texture;
+
+    GameWorld *world;
 };

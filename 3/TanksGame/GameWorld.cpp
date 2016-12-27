@@ -2,6 +2,7 @@
 #include "Game.h"
 
 GameWorld::GameWorld()
+    :camera(sf::FloatRect(0, 0, Game::width, Game::height))
 {}
 
 GameWorld::~GameWorld()
@@ -34,4 +35,14 @@ void GameWorld::addTerrain(Terrain *terrain)
 void GameWorld::setCamera(const float &y)
 {
     camera.setCenter(player->getPositionX(), y / 2);
+}
+
+Terrain *GameWorld::getTerrain()
+{
+    return terrain;
+}
+
+sf::View &GameWorld::getView()
+{
+    return camera;
 }

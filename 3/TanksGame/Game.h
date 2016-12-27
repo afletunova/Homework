@@ -5,6 +5,8 @@
 class Game
 {
 public:
+    Game();
+    ~Game();
     void start();
 
     const static int width = 4096;
@@ -18,7 +20,8 @@ private:
     sf::Time ups = sf::seconds(1.f / 60.f);
 
     sf::RenderWindow mainWindow;
-    GameWorld gameWorld;
+
+    GameWorld *world;
 
     enum GameState { Playing, Paused };
 

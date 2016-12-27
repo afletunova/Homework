@@ -8,16 +8,21 @@
 class Terrain : public Entity
 {
 public:
-    Terrain();
-    ~Terrain();
+    Terrain(GameWorld *world);
 
     void draw(sf::RenderWindow &window);
+    int getHeightAt(int x);
+
+    const float getAngle(float x);
+
 private:
     const static int size = 4096;
     std::array<unsigned int, size> vertices;
 
-    void generateHeights();
+    void generateHeights(int leftBorder, int rightBorder);
 
     const unsigned int height = 300;
+    const int percent = 30;
+    const int maxStep = 256;
 };
 

@@ -1,17 +1,16 @@
 #include "Tank.h"
 #include "Game.h"
 
-Tank::Tank()
-{
-    load("tank.png");
+Tank::Tank(GameWorld *world) : Entity(world) {
+    load("tank1.png");
 
-    getSprite().setOrigin(getSprite().getScale().x / 2, 0);
+    getSprite().setOrigin(getSprite().getGlobalBounds().width / 2, getSprite().getGlobalBounds().height);
+    getSprite().setScale(1, 1);
 }
 
-Tank::~Tank() {}
 
-void Tank::update(float elapsedTime) {
-
+void Tank::update(float elapsedTime)
+{
     int direction = 0;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
         direction = -1;
@@ -28,6 +27,7 @@ void Tank::update(float elapsedTime) {
     }
 
     getSprite().move(direction * x, 0);
-    std::cout << getSprite().getPosition().x << std::endl;
+
+    getSprite().setPosition(getSprite().getPosition().x, getWorld()->getTerrain()->getHeightAt(getSprite().getPosition().x));
 }
 

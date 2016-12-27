@@ -1,29 +1,24 @@
 #include <SFML/Graphics/Text.hpp>
+#include <cmath>
+#include <iostream>
+#include <math.h>
+#include <algorithm>
 #include "Terrain.h"
-
-Terrain::Terrain()
-{
-    for (int i = 0; i < size; ++i)
-        vertices[i] = height;
-}
-
-Terrain::~Terrain()
-{}
+#include "Game.h"
 
 void Terrain::draw(sf::RenderWindow &window)
 {
     sf::Texture texture;
     sf::Image image;
-    image.create(size, 2 * height);
-
-    generateHeights();
+    image.create(size, Game::height, sf::Color::Transparent);
 
     for (unsigned int i = 0; i < size; ++i)
     {
+
         for (unsigned int j = 0; j < vertices[i]; ++j)
-            image.setPixel(i, j, sf::Color::Transparent);
-        for (unsigned int j = vertices[i]; j < 2 * height; ++j)
-            image.setPixel(i, j, sf::Color::Black);
+        {
+            image.setPixel(i, Game::height / 2 - j, sf::Color::Black);
+        }
     }
 
     texture.loadFromImage(image);
@@ -34,80 +29,63 @@ void Terrain::draw(sf::RenderWindow &window)
 
 }
 
-void Terrain::generateHeights()
+Terrain::Terrain(GameWorld *world) : Entity(world)
 {
-    for (int i = 2; i < size / 16; ++i)
+    for (int i = 0; i < size; ++i)
+        vertices[i] = height;
+    generateHeights(0, size);
+}
+
+void Terrain::generateHeights(int leftBorder, int rightBorder)
+{
+    int middle = (leftBorder + rightBorder) / 2;
+    double coefficient = 1;
+
+    if (std::rand() % 2 == 1)
     {
-        if (i % 4 == 0)
-            vertices[i] = vertices[i - 1] - 1;
-        else
-            vertices[i] = vertices[i - 1];
+        int middleHeight = vertices[middle] -= round(vertices[middle] * percent / 100);
+        coefficient = (vertices[leftBorder] - middleHeight) * 1000 / (middle - leftBorder);
+        coefficient /= 1000;
+        for (int i = leftBorder + 1; i < middle; ++i)
+            vertices[i] = middleHeight + round(coefficient * (middle - i));
+        coefficient = (vertices[rightBorder] - middleHeight) * 1000 / (rightBorder - middle);
+        coefficient /= 1000;
+        for (int i = middle + 1; i < rightBorder; ++i)
+            vertices[i] = middleHeight + round(coefficient * (i - middle));
+    }
+    else
+    {
+        vertices[middle] += round(vertices[middle] * percent / 100);
+        int minHeight = vertices[leftBorder];
+        coefficient = (vertices[middle] - minHeight) * 1000 / (middle - leftBorder);
+        coefficient /= 1000;
+        for (int i = leftBorder + 1; i < middle; ++i)
+            vertices[i] = (unsigned int) (minHeight + round(coefficient * (i - leftBorder)));
+        minHeight = vertices[rightBorder];
+        coefficient = (vertices[middle] - minHeight) * 1000 / (rightBorder - middle);
+        coefficient /= 1000;
+        for (int i = middle + 1; i < rightBorder; ++i)
+            vertices[i] = (unsigned int) (minHeight + round(coefficient * (rightBorder - i)));
     }
 
-    for (int i = size / 16; i < size / 8; ++i)
-        if (i % 3 == 0)
-            vertices[i] = vertices[i - 1] + 1;
-        else
-            vertices[i] = vertices[i - 1];
+    if (middle - leftBorder > maxStep)
+    {
+        generateHeights(leftBorder, middle);
+        generateHeights(middle, rightBorder);
+    }
+    return;
+}
 
-    for (int i = size / 8; i < size / 8 + size / 16; ++i)
-        vertices[i] = vertices[i - 1];
+const float Terrain::getAngle(float x)
+{
+    x = round(x);
+    int delta = 2;
+    int leftX =(int) std::max(0.0f, x - delta / 2);
+    int rightX = (int) std::min(x + delta / 2, (float) (size - 1));
+    return atan((vertices[rightX] - vertices[leftX]) / delta) * 180 / M_PI;
+}
 
-
-    for (int i = size / 8 + size / 16; i < size / 4; ++i)
-        if (i % 2 == 0)
-            vertices[i] = vertices[i - 1];
-        else
-            vertices[i] = vertices[i - 1] - 1;
-
-    for (int i = size / 4; i < size / 4 + size / 16; ++i)
-        if (i % 6 == 0)
-            vertices[i] = vertices[i - 1] - 1;
-        else
-            vertices[i] = vertices[i - 1];
-
-    for (int i = size / 4 + size / 16; i < size / 4 + size / 8 + size / 16; ++i)
-        if (i % 4 == 0)
-            vertices[i] = vertices[i - 1] + 1;
-        else
-            vertices[i] = vertices[i - 1];
-
-    for (int i = size / 4 + size / 8 + size / 16; i < size / 2; ++i)
-        if (i % 3 == 0)
-            vertices[i] = vertices[i - 1] - 1;
-        else
-            vertices[i] = vertices[i - 1];
-
-    for (int i = size / 2; i < size / 2 + size / 8; ++i)
-        if (i % 4 == 0)
-            vertices[i] = vertices[i - 1] - 1;
-        else
-            vertices[i] = vertices[i - 1];
-
-    for (int i = size / 2 + size / 8; i < size / 2 + size / 4; ++i)
-        if (i % 7 == 0)
-            vertices[i] = vertices[i - 1] + 1;
-        else
-            vertices[i] = vertices[i - 1];
-
-    for (int i = size / 2 + size / 4; i < size / 2 + size / 4 + size / 16; ++i)
-        if (i % 8 == 0)
-            vertices[i] = vertices[i - 1] + 2;
-        else
-            vertices[i] = vertices[i - 1];
-
-    for (int i = size / 2 + size / 4 + size / 16; i < size / 2 + size / 4 + size / 8; ++i)
-        if (i % 4 == 0)
-            vertices[i] = vertices[i - 1] - 1;
-        else
-            vertices[i] = vertices[i - 1];
-
-    for (int i = size / 2 + size / 4 + size / 8; i < size / 2 + size / 4 + size / 8 + size / 16; ++i)
-        if (i % 5 == 0)
-            vertices[i] = vertices[i - 1] + 2;
-    else
-            vertices[i] = vertices[i - 1];
-
-    for (int i = size / 2 + size / 4 + size / 8 + size / 16; i < size; ++i)
-        vertices[i] = vertices[i - 1];
+int Terrain::getHeightAt(int x)
+{
+    return Game::height - vertices[x];
 }

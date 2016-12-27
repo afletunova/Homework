@@ -1,9 +1,6 @@
 #include "Entity.h"
 
-Entity::Entity()
-{}
-
-Entity::~Entity()
+Entity::Entity(GameWorld *world) : world(world)
 {}
 
 void Entity::load(const std::string filename)
@@ -23,11 +20,13 @@ void Entity::setPosition(const float x, const float y)
 void Entity::update(float elapsedTime)
 {}
 
-sf::Sprite &Entity::getSprite() {
+sf::Sprite &Entity::getSprite()
+{
     return sprite;
 }
 
-void Entity::draw(sf::RenderWindow &window) {
+void Entity::draw(sf::RenderWindow &window)
+{
     window.draw(sprite);
 }
 
@@ -38,3 +37,8 @@ const float Entity::getPositionX() {
 const float Entity::getPositionY() {
     return getSprite().getPosition().y;
 }
+
+GameWorld *Entity::getWorld() {
+    return world;
+}
+

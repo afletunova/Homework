@@ -5,9 +5,7 @@
 class Tank : public Entity
 {
 public:
-    Tank();
-    ~Tank();
-
+    Tank(GameWorld *world);
     void update(float elapsedTime);
 
 private:
