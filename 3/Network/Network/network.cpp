@@ -8,30 +8,32 @@ using namespace std;
 Network::Network()
 {}
 
-Network *Network::createFromList(vector<Computer *> *computers)
+Network *Network::createFromList(vector<Computer *> *computers, Random *factor)
 {
     Network *network = new Network;
+    network->random = factor;
     network->computers.assign(computers->begin(), computers->end());
     return network;
 }
 
-Network *Network::createFromFile(const string &filename)
+Network *Network::createFromFile(const string &filename, Random *factor)
 {
     Network *network = new Network;
+    network->random = factor;
     ifstream input(filename);
 
-    int OScount = 0;
-    input >> OScount;
-    for (int i = 0; i < OScount; ++i)
+    int osCount = 0;
+    input >> osCount;
+    for (int i = 0; i < osCount; ++i)
     {
-        string OS;
+        string os;
         int count = 0;
         int strength = 0;
-        input >> OS >> strength >> count;
+        input >> os >> strength >> count;
 
         for (int j = 0; j < count; ++j)
         {
-            network->computers.push_back(new Computer(strength, OS + "#" + std::to_string(j + 1)));
+            network->computers.push_back(new Computer(strength, os + "#" + std::to_string(j + 1)));
         }
     }
     int relations = 0;
@@ -54,7 +56,7 @@ void Network::startSimulation(int stepCount)
     for (int i = 0; i < stepCount; ++i)
     {
         for (Computer * computer : computers)
-            computer->makeStep();
+            computer->makeStep(random);
         printStepInfo(i);
     }
 }
@@ -81,5 +83,4 @@ void Network::printStepInfo(int step) const
         else
             cout << "is not infected" << endl;
     }
-
 }

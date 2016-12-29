@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Network/network.h"
 #include "networktest.h"
+#include "Random/fakerandom.h"
 
 using namespace std;
 
@@ -12,7 +13,8 @@ int main()
 
     string filename = "file.txt";
     int steps = 10;
-    Network *network = Network::createFromFile(filename);
+    Random *factor = new Random;
+    Network *network = Network::createFromFile(filename, factor);
     network->startSimulation(steps);
     delete network;
     return 0;

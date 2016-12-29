@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include "../Random/random.h"
 
 using namespace std;
 
@@ -19,8 +20,9 @@ public:
 
     /**
      * @brief makeStep - passes through neighbors and tries to infect them
+     * @param random
      */
-    void makeStep();
+    void makeStep(Random *random);
     /**
      * @brief infect - attempts to infect computer with given probability
      * @param coefficient - random number

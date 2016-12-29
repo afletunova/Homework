@@ -4,13 +4,15 @@ Computer::Computer(int strength, const string &name)
     : name(name), strength(strength), infected(false)
 {}
 
-void Computer::makeStep()
+void Computer::makeStep(Random *random)
 {
     if (!isInfected())
         return;
 
+    int randomStrength = random->generateRandomNumber(1, 101);
+
     for (Computer *neighbor : neighbors)
-        neighbor->infect(rand() % 100 + 1);
+        neighbor->infect(randomStrength);
 }
 
 bool Computer::infect(int coefficient)

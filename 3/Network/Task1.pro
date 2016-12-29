@@ -11,11 +11,15 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     Computer/computer.cpp \
-    Network/network.cpp
+    Network/network.cpp \
+    Random/random.cpp \
+    Random/fakerandom.cpp
 
 HEADERS += \
     Computer/computer.h \
     Network/network.h \
-    networktest.h
+    networktest.h \
+    Random/random.h \
+    Random/fakerandom.h
 
 DISTFILES +=

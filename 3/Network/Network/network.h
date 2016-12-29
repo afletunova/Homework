@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 
+#include "../Random/random.h"
 #include "../Computer/computer.h"
 
 /**
@@ -17,9 +18,10 @@ public:
      * @brief createFromList - create Network from computers list
      * All computers should be initialized with proper names and neighbors
      * @param computers
+     * @param factor
      * @return
      */
-    static Network *createFromList(vector<Computer *> *computers);
+    static Network *createFromList(vector<Computer *> *computers, Random *random);
     /**
      * @brief createFromFile - create Network from input file
      * The file should be like:
@@ -28,9 +30,10 @@ public:
      * Computers count at all
      * Relations between computers
      * @param filename
+     * @param factor
      * @return
      */
-    static Network *createFromFile(const string &filename);
+    static Network *createFromFile(const string &filename, Random *random);
 
     /**
      * @brief startSimulation - simulation of the process of infection, depending on the number of steps
@@ -52,4 +55,6 @@ private:
     void printStepInfo(int step) const;
 
     vector<Computer *> computers;
+
+    Random *random;
 };
