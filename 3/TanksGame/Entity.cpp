@@ -1,44 +1,48 @@
 #include "Entity.h"
 
-Entity::Entity(GameWorld *world) : world(world)
+Entity::Entity(GameWorld *world) : world(world), sprite(new sf::Sprite)
 {}
 
-void Entity::load(const std::string filename)
+void Entity::load(const std::string &filename)
 {
     if (!texture.loadFromFile(filename))
     {
         return;
     }
-    sprite.setTexture(texture);
+    sprite->setTexture(texture);
 }
 
-void Entity::setPosition(const float x, const float y)
+void Entity::setPosition(float x, float y)
 {
-    sprite.setPosition(x, y);
+    sprite->setPosition(x, y);
 }
 
-void Entity::update(float elapsedTime)
-{}
-
-sf::Sprite &Entity::getSprite()
+sf::Sprite *Entity::getSprite() const
 {
     return sprite;
 }
 
 void Entity::draw(sf::RenderWindow &window)
 {
-    window.draw(sprite);
+    window.draw(*sprite);
 }
 
-const float Entity::getPositionX() {
-    return getSprite().getPosition().x;
+float Entity::getPositionX() const
+{
+    return getSprite()->getPosition().x;
 }
 
-const float Entity::getPositionY() {
-    return getSprite().getPosition().y;
+float Entity::getPositionY() const
+{
+    return getSprite()->getPosition().y;
 }
 
-GameWorld *Entity::getWorld() {
+GameWorld *Entity::getWorld() const
+{
     return world;
 }
 
+Entity::~Entity()
+{
+    delete sprite;
+}

@@ -1,16 +1,25 @@
 #pragma once
+
 #include <SFML/Graphics.hpp>
 #include "GameWorld.h"
+#include "NetworkManager.h"
 
 class Game
 {
 public:
-    Game();
-    ~Game();
-    void start();
+    Game(NetworkManager *networkManager, bool isServer);
 
-    const static int width = 4096;
-    const static int height = 1024;
+    ~Game();
+
+    bool start();
+    void over(bool localPlayerIsWinner);
+
+    bool isOnServer();
+
+    const static int width = 1024;
+    const static int height = 720;
+    const static int distance = 100;
+    const unsigned int fps = 60;
 
 private:
     void gameLoop();
@@ -23,8 +32,16 @@ private:
 
     GameWorld *world;
 
-    enum GameState { Playing, Paused };
+    enum GameState
+    {
+        Playing, Ended
+    };
 
     GameState gameState;
+
+    NetworkManager *networkManager;
+
+    bool isServer;
+    bool localPlayerIsWinner;
 };
 

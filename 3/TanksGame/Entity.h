@@ -10,24 +10,26 @@ class Entity
 {
 public:
     Entity(GameWorld *world);
-    virtual ~Entity(){}
 
-    GameWorld *getWorld();
+    virtual ~Entity();
 
-    virtual void load(const std::string filename);
-    virtual void setPosition(const float x, const float y);
-    virtual void update(float elapsedTime);
+    GameWorld *getWorld() const;
+
+    virtual void load(const std::string &filename);
+
+    virtual void setPosition(float x, float y);
+
     virtual void draw(sf::RenderWindow &window);
 
-    virtual const float getPositionX();
-    virtual const float getPositionY();
+    virtual float getPositionX() const;
+
+    virtual float getPositionY() const;
 
 protected:
-    sf::Sprite &getSprite();
+    sf::Sprite *getSprite() const;
 
 private:
-
-    sf::Sprite sprite;
+    sf::Sprite *sprite;
     sf::Texture texture;
 
     GameWorld *world;

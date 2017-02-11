@@ -3,6 +3,7 @@
 #include <iostream>
 #include <math.h>
 #include <algorithm>
+#include <stdlib.h>
 #include "Terrain.h"
 #include "Game.h"
 
@@ -14,7 +15,6 @@ void Terrain::draw(sf::RenderWindow &window)
 
     for (unsigned int i = 0; i < size; ++i)
     {
-
         for (unsigned int j = 0; j < vertices[i]; ++j)
         {
             image.setPixel(i, Game::height / 2 - j, sf::Color::Black);
@@ -22,11 +22,9 @@ void Terrain::draw(sf::RenderWindow &window)
     }
 
     texture.loadFromImage(image);
-
-    getSprite().setTexture(texture);
-
-    window.draw(getSprite());
-
+    texture.setSmooth(true);
+    getSprite()->setTexture(texture);
+    window.draw(*getSprite());
 }
 
 Terrain::Terrain(GameWorld *world) : Entity(world)
@@ -34,6 +32,15 @@ Terrain::Terrain(GameWorld *world) : Entity(world)
     for (int i = 0; i < size; ++i)
         vertices[i] = height;
     generateHeights(0, size);
+
+    auto verticesCopy(vertices);
+    for (int i = 40; i < vertices.size() - 40; ++i)
+    {
+        unsigned int sum = 0;
+        for (int j = -40; j < 40; ++j)
+            sum += verticesCopy[i + j];
+        vertices[i] = sum / 80;
+    }
 }
 
 void Terrain::generateHeights(int leftBorder, int rightBorder)
@@ -52,8 +59,7 @@ void Terrain::generateHeights(int leftBorder, int rightBorder)
         coefficient /= 1000;
         for (int i = middle + 1; i < rightBorder; ++i)
             vertices[i] = middleHeight + round(coefficient * (i - middle));
-    }
-    else
+    } else
     {
         vertices[middle] += round(vertices[middle] * percent / 100);
         int minHeight = vertices[leftBorder];
@@ -76,11 +82,11 @@ void Terrain::generateHeights(int leftBorder, int rightBorder)
     return;
 }
 
-const float Terrain::getAngle(float x)
+float Terrain::getAngle(float x) const
 {
     x = round(x);
     int delta = 2;
-    int leftX =(int) std::max(0.0f, x - delta / 2);
+    int leftX = (int) std::max(0.0f, x - delta / 2);
     int rightX = (int) std::min(x + delta / 2, (float) (size - 1));
     return atan((vertices[rightX] - vertices[leftX]) / delta) * 180 / M_PI;
 }
