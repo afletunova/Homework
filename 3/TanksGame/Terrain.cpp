@@ -27,7 +27,7 @@ void Terrain::draw(sf::RenderWindow &window)
     window.draw(*getSprite());
 }
 
-Terrain::Terrain(GameWorld *world) : Entity(world)
+Terrain::Terrain(GameWorld *world, int seed) : Entity(world), seed((unsigned int) seed)
 {
     for (int i = 0; i < size; ++i)
         vertices[i] = height;
@@ -41,6 +41,7 @@ Terrain::Terrain(GameWorld *world) : Entity(world)
             sum += verticesCopy[i + j];
         vertices[i] = sum / 80;
     }
+    std::srand(seed);
 }
 
 void Terrain::generateHeights(int leftBorder, int rightBorder)
@@ -54,11 +55,11 @@ void Terrain::generateHeights(int leftBorder, int rightBorder)
         coefficient = (vertices[leftBorder] - middleHeight) * 1000 / (middle - leftBorder);
         coefficient /= 1000;
         for (int i = leftBorder + 1; i < middle; ++i)
-            vertices[i] = middleHeight + round(coefficient * (middle - i));
+            vertices[i] = (unsigned int) (middleHeight + round(coefficient * (middle - i)));
         coefficient = (vertices[rightBorder] - middleHeight) * 1000 / (rightBorder - middle);
         coefficient /= 1000;
         for (int i = middle + 1; i < rightBorder; ++i)
-            vertices[i] = middleHeight + round(coefficient * (i - middle));
+            vertices[i] = (unsigned int) (middleHeight + round(coefficient * (i - middle)));
     } else
     {
         vertices[middle] += round(vertices[middle] * percent / 100);

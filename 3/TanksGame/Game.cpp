@@ -1,27 +1,58 @@
 #include "Game.h"
 #include "KeyboardTank.h"
 #include "vendor/easylogging++.h"
+
+Game::Game(NetworkManager *networkManager, bool isServer) : world(new GameWorld(this)),
+                                                            networkManager(networkManager), isServer(isServer)
+{
+    world->addNetworkManager(networkManager);
+    if (isServer)
+        LOG(INFO) << "Is Server";
+    else
+        LOG(INFO) << "Is Client";
+}
+
 bool Game::start()
 {
     mainWindow.create(sf::VideoMode(width,height), "Tanks");
     mainWindow.setFramerateLimit(fps);
-
-    KeyboardTank *localPlayer = new KeyboardTank(world);
-    RemoteTank *opponent = new RemoteTank(world);
-
-    world->setOnServer(isOnServer());
-    world->setWindow(&mainWindow);
-
-    Terrain *terrain = new Terrain(world);
-    terrain->setPosition(0, height / 2);
 
     if(isOnServer())
         mainWindow.setTitle("Server");
     else
         mainWindow.setTitle("Client");
 
+    KeyboardTank *localPlayer = new KeyboardTank(world);
+    RemoteTank *opponent = new RemoteTank(world);
+
+    Terrain *terrain;
+    Command command;
+    if (isOnServer())
+    {
+        int seed = (int) time(NULL);
+        terrain = new Terrain(world, seed);
+        command.name = "terrain";
+        command.argumentsCount = 1;
+        command.arguments = new int[command.argumentsCount];
+        command.arguments[0] = seed;
+        networkManager->send(command);
+    }
+    else
+    {
+        while (!networkManager->receive(command) || command.name != "terrain")
+        {
+            sf::sleep(sf::seconds(1.0f / fps));
+        }
+        terrain = new Terrain(world, command.arguments[0]);
+    }
+
+    world->setOnServer(isOnServer());
+    world->setWindow(&mainWindow);
+
     world->addPlayer(localPlayer);
     world->addOpponent(opponent);
+
+    terrain->setPosition(0, height / 2);
     world->addTerrain(terrain);
 
     if (isOnServer())
@@ -58,7 +89,6 @@ void Game::gameLoop()
     {
         if (event.type == sf::Event::Closed)
             mainWindow.close();
-
         break;
     }
 
@@ -96,12 +126,6 @@ Game::~Game()
     delete networkManager;
 }
 
-Game::Game(NetworkManager *networkManager, bool isServer) : world(new GameWorld(this)),
-                                                            networkManager(networkManager), isServer(isServer)
-{
-    world->addNetworkManager(networkManager);
-}
-
 bool Game::isOnServer()
 {
     return isServer;
@@ -112,5 +136,3 @@ void Game::over(bool localPlayerIsWinner)
     this->localPlayerIsWinner = localPlayerIsWinner;
     gameState = Ended;
 }
-
-

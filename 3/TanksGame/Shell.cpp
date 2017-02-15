@@ -3,6 +3,7 @@
 
 #include "vendor/easylogging++.h"
 #include "Game.h"
+#include "Tank.h"
 
 void Shell::draw(sf::RenderWindow &window)
 {
@@ -17,12 +18,12 @@ void Shell::update(float elapsedTime)
     setPosition(startX + x, startY + y);
 
     if (this->getPositionX() < 0 || this->getPositionX() > Game::width
-            || this->getPositionY() > getWorld()->getTerrain()->getHeightAt(this->getPositionX()))
+            || this->getPositionY() > getWorld()->getTerrain()->getHeightAt((int) this->getPositionX()))
         active = false;
 
     bool collide = this->isCollide(getWorld()->getOpponent());
 
-    if (collide && getWorld()->isOnServer())
+    if (collide)
     {
         active = false;
         getWorld()->getGame()->over(true);
@@ -85,22 +86,25 @@ bool Shell::isActive() const
     return active;
 }
 
-bool Shell::isCollide(Entity *player)
+bool Shell::isCollide(Tank *player)
 {
     if (!isActive())
         return false;
 
     int deltaX = (int) (this->getPositionX() - player->getPositionX());
     int deltaY = (int) (this->getPositionY() - player->getPositionY());
+    int delta = (int) (player->getSpriteRadius() + getDamageRadius());
 
-    if (deltaX * deltaX + deltaY * deltaY < getDamageRadius() * getDamageRadius())
+    if ((deltaX * deltaX + deltaY * deltaY < getDamageRadius() * getDamageRadius()))
     {
         LOG(INFO) << "ShellPosX = " << this->getPositionX() << " ShellPosY = " << this->getPositionY();
         LOG(INFO) << "PlayerPosX = " << player->getPositionX() << " PlayerPosY = " << player->getPositionY();
         LOG(INFO) << "DeltaX = " << deltaX << " DeltaY = " << deltaY;
     }
 
-    return deltaX * deltaX + deltaY * deltaY < getDamageRadius() * getDamageRadius();
+    if (deltaX * deltaX + deltaY * deltaY < delta * delta)
+        LOG(INFO) << "Collide!";
+    return deltaX * deltaX + deltaY * deltaY < delta * delta;
 }
 
 float Shell::getDamageRadius() const

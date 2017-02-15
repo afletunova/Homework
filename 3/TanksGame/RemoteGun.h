@@ -14,5 +14,6 @@ public:
 
 private:
     const float startAngle = 270;
+    const int spriteRadius = 75;
     sf::Vector2f getFirePosition() const;
 };

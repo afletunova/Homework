@@ -13,8 +13,6 @@ public:
 
     virtual ~Entity();
 
-    GameWorld *getWorld() const;
-
     virtual void load(const std::string &filename);
 
     virtual void setPosition(float x, float y);
@@ -27,6 +25,7 @@ public:
 
 protected:
     sf::Sprite *getSprite() const;
+    GameWorld *getWorld() const;
 
 private:
     sf::Sprite *sprite;

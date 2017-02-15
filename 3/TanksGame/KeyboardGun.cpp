@@ -40,7 +40,6 @@ void KeyboardGun::update(float x, float y)
             getWorld()->getWindow()->hasFocus() &&
             clock.getElapsedTime().asMilliseconds() >= reloadTimeMS)
     {
-        LOG(INFO) << "Fire!";
         fire();
         clock.restart();
     }
@@ -65,7 +64,6 @@ void KeyboardGun::fire()
     shell->setAngle(getSprite()->getRotation());
     sf::Vector2f position = getFirePosition();
     shell->setPosition(position.x, position.y);
-    LOG(INFO) << "Shell is added; KeyboardGun::fire";
     getWorld()->addShell(shell);
 
     Command command;

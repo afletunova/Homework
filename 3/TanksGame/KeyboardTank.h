@@ -2,8 +2,9 @@
 
 #include "Entity.h"
 #include "KeyboardGun.h"
+#include "Tank.h"
 
-class KeyboardTank : public Entity
+class KeyboardTank : public Tank
 {
 public:
     KeyboardTank(GameWorld *world);

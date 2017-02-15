@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Entity.h"
 #include "KeyboardGun.h"
 #include "RemoteGun.h"
+#include "Tank.h"
 
-class RemoteTank : public Entity
+class RemoteTank : public Tank
 {
 public:
     RemoteTank(GameWorld *world);

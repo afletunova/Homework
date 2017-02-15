@@ -2,7 +2,7 @@
 #include "KeyboardTank.h"
 #include "Game.h"
 
-KeyboardTank::KeyboardTank(GameWorld *world) : Entity(world)
+KeyboardTank::KeyboardTank(GameWorld *world) : Tank(world)
 {
     load("tank1.png");
 
@@ -57,4 +57,3 @@ void KeyboardTank::draw(sf::RenderWindow &window)
     window.draw(*getSprite());
     gun->draw(window);
 }
-

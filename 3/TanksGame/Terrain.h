@@ -8,7 +8,7 @@
 class Terrain : public Entity
 {
 public:
-    Terrain(GameWorld *world);
+    Terrain(GameWorld *world, int seed);
 
     void draw(sf::RenderWindow &window);
 
@@ -23,6 +23,7 @@ private:
     void generateHeights(int leftBorder, int rightBorder);
 
     const unsigned int height = 300;
+    unsigned int seed = 1;
     const int percent = 30;
     const int maxStep = 64;
 };

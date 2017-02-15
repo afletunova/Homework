@@ -1,6 +1,5 @@
 #include "RemoteTank.h"
 #include "GameWorld.h"
-#include "Game.h"
 #include "vendor/easylogging++.h"
 
 void RemoteTank::setPositionX(int x)
@@ -9,7 +8,7 @@ void RemoteTank::setPositionX(int x)
     gun->setPosition(getSprite()->getPosition().x, getSprite()->getPosition().y - gunHeight);
 }
 
-RemoteTank::RemoteTank(GameWorld *world) : Entity(world)
+RemoteTank::RemoteTank(GameWorld *world) : Tank(world)
 {
     load("tank1.png");
     getSprite()->setOrigin(getSprite()->getGlobalBounds().width / 2, getSprite()->getGlobalBounds().height);

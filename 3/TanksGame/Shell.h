@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Entity.h"
+#include "Tank.h"
 
 class Shell : public Entity
 {
@@ -17,7 +18,7 @@ public:
 
     bool isActive() const;
 
-    bool isCollide(Entity *player);
+    bool isCollide(Tank *player);
 
     float getSpeed() const;
 

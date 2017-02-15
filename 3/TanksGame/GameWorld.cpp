@@ -1,8 +1,8 @@
 #include "GameWorld.h"
 #include "Game.h"
 
-GameWorld::GameWorld(Game *game) : game(game), isServer(false), shellPrototypes({new Shell(this, 8, 2, 50),
-                                                                        new Shell(this, 6, 8, 100)})
+GameWorld::GameWorld(Game *game) : game(game), isServer(false), shellPrototypes({new Shell(this, 8, 2, 10),
+                                                                        new Shell(this, 6, 8, 40)})
 {}
 
 GameWorld::~GameWorld()
