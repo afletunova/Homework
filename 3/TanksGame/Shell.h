@@ -3,6 +3,11 @@
 #include "Entity.h"
 #include "Tank.h"
 
+/**
+ * @brief
+ * This class is implements shell of guns.
+ * It handles collide situation
+ */
 class Shell : public Entity
 {
 public:
@@ -10,6 +15,10 @@ public:
 
     ~Shell();
 
+    /**
+     * @brief clone
+     * @return clone of the current Shell
+     */
     Shell *clone() const;
 
     void update(float elapsedTime);
@@ -34,6 +43,7 @@ private:
     Shell(const Shell &shell);
 
     sf::CircleShape shape;
+    sf::CircleShape bangShape;
 
     float speed = 0;
     float angle = 0;
@@ -46,6 +56,7 @@ private:
     unsigned int radius = 0;
 
     bool active = true;
+    bool bang = false;
 
     static constexpr float gravity = 9.8f;
 };

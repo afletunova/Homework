@@ -64,6 +64,7 @@ int main()
             }
         }
         game->start();
+        delete game;
     }
     return 0;
 }

@@ -6,13 +6,9 @@ Game::Game(NetworkManager *networkManager, bool isServer) : world(new GameWorld(
                                                             networkManager(networkManager), isServer(isServer)
 {
     world->addNetworkManager(networkManager);
-    if (isServer)
-        LOG(INFO) << "Is Server";
-    else
-        LOG(INFO) << "Is Client";
 }
 
-bool Game::start()
+void Game::start()
 {
     mainWindow.create(sf::VideoMode(width,height), "Tanks");
     mainWindow.setFramerateLimit(fps);
@@ -75,8 +71,8 @@ bool Game::start()
                 gameLoop();
                 break;
             case Game::Ended:
+                gameOver();
                 mainWindow.close();
-                return this->localPlayerIsWinner;
         }
     }
     mainWindow.close();
@@ -110,8 +106,6 @@ void Game::gameLoop()
         accumulator -= ups;
         world->updateAll(ups);
     }
-    //LOG(INFO) << "fps" << int(clock.getElapsedTime().asMilliseconds());
-    //LOG(INFO) << "ups" << ups.asMilliseconds();
 
     mainWindow.clear(sf::Color::White);
     world->drawAll(mainWindow);
@@ -135,4 +129,31 @@ void Game::over(bool localPlayerIsWinner)
 {
     this->localPlayerIsWinner = localPlayerIsWinner;
     gameState = Ended;
+}
+
+void Game::gameOver()
+{
+    sf::Text text;
+    text.setCharacterSize(height / 20);
+    text.setColor(sf::Color::Black);
+
+    if (localPlayerIsWinner)
+        text.setString("You're winner!");
+    else
+        text.setString("Sorry, but you lose.");
+
+    LOG(INFO) << (std::string) text.getString();
+
+    text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height / 2);
+    text.setPosition(width / 2, height / 4);
+
+    mainWindow.draw(text);
+
+    sf::Event event;
+    while (mainWindow.pollEvent(event))
+    {
+        if (event.type == sf::Event::Closed || event.type == sf::Event::KeyPressed || event.type == sf::Event::MouseButtonPressed)
+            mainWindow.close();
+        break;
+    }
 }

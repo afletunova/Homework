@@ -4,6 +4,7 @@
 
 void RemoteTank::setPositionX(int x)
 {
+    getSprite()->setOrigin(getSprite()->getGlobalBounds().width / 2, getSprite()->getGlobalBounds().height);
     getSprite()->setPosition(x, getWorld()->getTerrain()->getHeightAt(x));
     gun->setPosition(getSprite()->getPosition().x, getSprite()->getPosition().y - gunHeight);
 }

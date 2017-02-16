@@ -3,7 +3,7 @@
 #include "Entity.h"
 #include "Shell.h"
 
-class RemoteGun : public Entity
+class RemoteGun : public Gun
 {
 public:
     RemoteGun(GameWorld *world);
@@ -14,6 +14,5 @@ public:
 
 private:
     const float startAngle = 270;
-    const int spriteRadius = 75;
     sf::Vector2f getFirePosition() const;
 };

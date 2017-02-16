@@ -3,7 +3,7 @@
 #include "GameWorld.h"
 #include "vendor/easylogging++.h"
 
-KeyboardGun::KeyboardGun(GameWorld *world) : Entity(world)
+KeyboardGun::KeyboardGun(GameWorld *world) : Gun(world)
 {
     load("gun.png");
 
@@ -36,7 +36,7 @@ void KeyboardGun::update(float x, float y)
 
     changeShell();
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) &&
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) &&
             getWorld()->getWindow()->hasFocus() &&
             clock.getElapsedTime().asMilliseconds() >= reloadTimeMS)
     {
@@ -44,14 +44,18 @@ void KeyboardGun::update(float x, float y)
         clock.restart();
     }
 
-    if (direction != 0)
+    if (direction != 0 || sendUpdatePackageClock.getElapsedTime().asMilliseconds() >= updatePackageInterval * 4)
     {
         Command command;
         command.name = "rotate";
         command.argumentsCount = 1;
         command.arguments = new int[command.argumentsCount];
         command.arguments[0] = (int) getSprite()->getRotation();
-        getWorld()->getNetworkManager()->send(command);
+        if (sendUpdatePackageClock.getElapsedTime().asMilliseconds() >= updatePackageInterval)
+        {
+            getWorld()->getNetworkManager()->send(command);
+            sendUpdatePackageClock.restart();
+        }
     }
 }
 

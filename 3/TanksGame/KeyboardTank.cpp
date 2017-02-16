@@ -37,7 +37,7 @@ void KeyboardTank::update(float elapsedTime)
                              getWorld()->getTerrain()->getHeightAt((int) getSprite()->getPosition().x));
     gun->update(getSprite()->getPosition().x, getSprite()->getPosition().y - gunHeight);
 
-    if (direction != 0)
+    if (direction != 0 || sendUpdatePackageClock.getElapsedTime().asMilliseconds() >= updatePackageInterval)
     {
         Command command;
         command.name = "move";

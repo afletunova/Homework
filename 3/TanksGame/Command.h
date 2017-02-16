@@ -2,6 +2,10 @@
 
 #include <string>
 
+/**
+ * @brief The Command structure
+ * It contains a data packet, which NetworkManager sends and receives
+ */
 struct Command
 {
     ~Command()

@@ -11,5 +11,5 @@ public:
 
 private:
     Gun *gun;
-    const int spriteRadius = 75;
+    const int spriteRadius = 50;
 };

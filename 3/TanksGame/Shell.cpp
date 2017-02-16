@@ -8,6 +8,11 @@
 void Shell::draw(sf::RenderWindow &window)
 {
     window.draw(shape, getSprite()->getTransform());
+    if (bang)
+    {
+        window.draw(bangShape);
+        bang = false;
+    }
 }
 
 void Shell::update(float elapsedTime)
@@ -17,22 +22,27 @@ void Shell::update(float elapsedTime)
     float y = speed * sin(angle * M_PI / 180.0f) * time + gravity * time * time / 2;
     setPosition(startX + x, startY + y);
 
-    if (this->getPositionX() < 0 || this->getPositionX() > Game::width
-            || this->getPositionY() > getWorld()->getTerrain()->getHeightAt((int) this->getPositionX()))
+    if ((this->getPositionX() < 0 || this->getPositionX() > Game::width
+            || this->getPositionY() > getWorld()->getTerrain()->getHeightAt((int) this->getPositionX())) && active)
+    {
         active = false;
+        bang = true;
+        bangShape.setPosition(this->getPositionX(), this->getPositionY());
+        bangShape.setFillColor(sf::Color::Black);
+        bangShape.setRadius(this->getDamageRadius());
+    }
 
     bool collide = this->isCollide(getWorld()->getOpponent());
 
     if (collide)
     {
         active = false;
-        getWorld()->getGame()->over(true);
-        LOG(INFO) << "Collide!";
         Command command;
         command.name = "gameOver";
         command.argumentsCount = 0;
         command.arguments = new int[command.argumentsCount];
         getWorld()->getNetworkManager()->send(command);
+        getWorld()->getGame()->over(true);
     }
 }
 
@@ -68,13 +78,10 @@ Shell::Shell(GameWorld *world, float speed, unsigned int radius, float damageRad
 {
     shape.setFillColor(sf::Color::Black);
     shape.setOrigin(radius / 2, radius / 2);
-    LOG(INFO) << "Shell is created; Shell::Shell";
 }
 
 Shell::Shell(const Shell &shell) : Shell(shell.getWorld(), shell.getSpeed(), shell.getRadius(), shell.getDamageRadius())
-{
-    LOG(INFO) << "Shell is created; Shell::Shell II";
-}
+{}
 
 unsigned int Shell::getRadius() const
 {
@@ -92,18 +99,9 @@ bool Shell::isCollide(Tank *player)
         return false;
 
     int deltaX = (int) (this->getPositionX() - player->getPositionX());
-    int deltaY = (int) (this->getPositionY() - player->getPositionY());
+    int deltaY = (int) (this->getPositionY() - (player->getPositionY() - player->getSpriteRadius()));
     int delta = (int) (player->getSpriteRadius() + getDamageRadius());
 
-    if ((deltaX * deltaX + deltaY * deltaY < getDamageRadius() * getDamageRadius()))
-    {
-        LOG(INFO) << "ShellPosX = " << this->getPositionX() << " ShellPosY = " << this->getPositionY();
-        LOG(INFO) << "PlayerPosX = " << player->getPositionX() << " PlayerPosY = " << player->getPositionY();
-        LOG(INFO) << "DeltaX = " << deltaX << " DeltaY = " << deltaY;
-    }
-
-    if (deltaX * deltaX + deltaY * deltaY < delta * delta)
-        LOG(INFO) << "Collide!";
     return deltaX * deltaX + deltaY * deltaY < delta * delta;
 }
 

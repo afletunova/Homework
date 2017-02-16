@@ -1,13 +1,14 @@
 #include "GameWorld.h"
 #include "Game.h"
 
-GameWorld::GameWorld(Game *game) : game(game), isServer(false), shellPrototypes({new Shell(this, 8, 2, 10),
+GameWorld::GameWorld(Game *game) : game(game), isServer(false), shellPrototypes({new Shell(this, 8, 2, 8),
                                                                         new Shell(this, 6, 8, 40)})
 {}
 
 GameWorld::~GameWorld()
 {
     delete me;
+    delete opponent;
     delete terrain;
 }
 
@@ -47,11 +48,6 @@ void GameWorld::addTerrain(Terrain *terrain)
 Terrain *GameWorld::getTerrain()
 {
     return terrain;
-}
-
-sf::View &GameWorld::getView()
-{
-    return camera;
 }
 
 KeyboardTank *GameWorld::getPlayer()

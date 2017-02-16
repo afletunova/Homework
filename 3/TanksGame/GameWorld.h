@@ -11,6 +11,10 @@
 
 class Game;
 
+/**
+ * @brief The GameWorld class
+ * This class is implements a game world and it is responsible for updating and drawing all the objects
+ */
 class GameWorld
 {
 public:
@@ -26,11 +30,19 @@ public:
 
     void addNetworkManager(NetworkManager *networkManager);
 
-    void setCamera(float y);
-
     void setWindow(sf::RenderWindow *mainWindow);
 
+    /**
+     *@brief updateAll
+     * It calls an update function for player and shells
+     */
     void updateAll(sf::Time);
+
+    /**
+     * @brief drawAll
+     * It draws all the objects which contains in the game world
+     * @param window
+     */
 
     void drawAll(sf::RenderWindow &window);
 
@@ -54,8 +66,6 @@ public:
 
     Shell *getShellPrototype(int index);
 
-    sf::View &getView();
-
 private:
     std::vector<Shell *> shells;
     const std::vector<Shell *> shellPrototypes;
@@ -63,7 +73,6 @@ private:
     RemoteTank *opponent;
     Terrain *terrain;
     NetworkManager *networkManager;
-    sf::View camera;
 
     Game *game;
 
