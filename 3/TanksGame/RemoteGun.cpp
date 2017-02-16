@@ -8,7 +8,7 @@ void RemoteGun::setRotation(int angle)
     getSprite()->setRotation(angle);
 }
 
-RemoteGun::RemoteGun(GameWorld *world) : Gun(world)
+RemoteGun::RemoteGun(GameWorld *world) : Entity(world)
 {
     load("gun.png");
     getSprite()->setOrigin(0, getSprite()->getGlobalBounds().height / 2);
@@ -31,4 +31,9 @@ sf::Vector2f RemoteGun::getFirePosition() const
     position += getSprite()->getLocalBounds().width * sf::Vector2f(cos(rotationRadians), sin(rotationRadians));
 
     return position;
+}
+
+float RemoteGun::getHeight()
+{
+    return height;
 }

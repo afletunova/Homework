@@ -2,9 +2,9 @@
 #include "KeyboardTank.h"
 #include "Game.h"
 
-KeyboardTank::KeyboardTank(GameWorld *world) : Tank(world)
+KeyboardTank::KeyboardTank(GameWorld *world) : Entity(world)
 {
-    load("tank1.png");
+    load("tank.png");
 
     getSprite()->setOrigin(getSprite()->getGlobalBounds().width / 2, getSprite()->getGlobalBounds().height);
     gun = new KeyboardGun(world);
@@ -35,7 +35,7 @@ void KeyboardTank::update(float elapsedTime)
     getSprite()->move(direction * x, 0);
     getSprite()->setPosition(getSprite()->getPosition().x,
                              getWorld()->getTerrain()->getHeightAt((int) getSprite()->getPosition().x));
-    gun->update(getSprite()->getPosition().x, getSprite()->getPosition().y - gunHeight);
+    gun->update(getSprite()->getPosition().x, getSprite()->getPosition().y - gun->getHeight());
 
     if (direction != 0 || sendUpdatePackageClock.getElapsedTime().asMilliseconds() >= updatePackageInterval)
     {
@@ -56,4 +56,9 @@ void KeyboardTank::draw(sf::RenderWindow &window)
 {
     window.draw(*getSprite());
     gun->draw(window);
+}
+
+KeyboardTank::~KeyboardTank()
+{
+    delete gun;
 }

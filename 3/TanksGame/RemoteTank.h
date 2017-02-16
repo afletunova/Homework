@@ -2,12 +2,17 @@
 
 #include "KeyboardGun.h"
 #include "RemoteGun.h"
-#include "Tank.h"
 
-class RemoteTank : public Tank
+/**
+ * @brief The RemoteTank class
+ * Implements the logic of an opponent's tank
+ */
+class RemoteTank : public Entity
 {
 public:
     RemoteTank(GameWorld *world);
+
+    ~RemoteTank();
 
     void draw(sf::RenderWindow &window) override;
 
@@ -19,5 +24,4 @@ public:
 
 private:
     RemoteGun *gun;
-    const float gunHeight = 75;
 };

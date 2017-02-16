@@ -6,15 +6,15 @@ void RemoteTank::setPositionX(int x)
 {
     getSprite()->setOrigin(getSprite()->getGlobalBounds().width / 2, getSprite()->getGlobalBounds().height);
     getSprite()->setPosition(x, getWorld()->getTerrain()->getHeightAt(x));
-    gun->setPosition(getSprite()->getPosition().x, getSprite()->getPosition().y - gunHeight);
+    gun->setPosition(getSprite()->getPosition().x, getSprite()->getPosition().y - gun->getHeight());
 }
 
-RemoteTank::RemoteTank(GameWorld *world) : Tank(world)
+RemoteTank::RemoteTank(GameWorld *world) : Entity(world)
 {
-    load("tank1.png");
+    load("tank.png");
     getSprite()->setOrigin(getSprite()->getGlobalBounds().width / 2, getSprite()->getGlobalBounds().height);
     gun = new RemoteGun(world);
-    gun->setPosition(getSprite()->getPosition().x, getSprite()->getPosition().y - gunHeight);
+    gun->setPosition(getSprite()->getPosition().x, getSprite()->getPosition().y - gun->getHeight());
 }
 
 void RemoteTank::draw(sf::RenderWindow &window)
@@ -31,4 +31,9 @@ void RemoteTank::setGunRotation(int angle)
 void RemoteTank::fire(int angle, int shellIndex)
 {
     gun->fire(angle, shellIndex);
+}
+
+RemoteTank::~RemoteTank()
+{
+    delete gun;
 }

@@ -1,5 +1,4 @@
 #include "Game.h"
-#include "KeyboardTank.h"
 #include "vendor/easylogging++.h"
 
 Game::Game(NetworkManager *networkManager, bool isServer) : world(new GameWorld(this)),
@@ -10,10 +9,10 @@ Game::Game(NetworkManager *networkManager, bool isServer) : world(new GameWorld(
 
 void Game::start()
 {
-    mainWindow.create(sf::VideoMode(width,height), "Tanks");
+    mainWindow.create(sf::VideoMode(width, height), "Tanks");
     mainWindow.setFramerateLimit(fps);
 
-    if(isOnServer())
+    if (isOnServer())
         mainWindow.setTitle("Server");
     else
         mainWindow.setTitle("Client");
@@ -32,8 +31,7 @@ void Game::start()
         command.arguments = new int[command.argumentsCount];
         command.arguments[0] = seed;
         networkManager->send(command);
-    }
-    else
+    } else
     {
         while (!networkManager->receive(command) || command.name != "terrain")
         {
@@ -55,8 +53,7 @@ void Game::start()
     {
         opponent->setPositionX(distance);
         localPlayer->setPosition(width - distance, 0);
-    }
-    else
+    } else
     {
         opponent->setPositionX(width - distance);
         localPlayer->setPosition(distance, 0);
@@ -72,7 +69,6 @@ void Game::start()
                 break;
             case Game::Ended:
                 gameOver();
-                mainWindow.close();
         }
     }
     mainWindow.close();
@@ -85,24 +81,23 @@ void Game::gameLoop()
     {
         if (event.type == sf::Event::Closed)
             mainWindow.close();
-        break;
-    }
-
-    Command command;
-    if (networkManager->receive(command))
-    {
-        if (command.name == "move")
-            world->getOpponent()->setPositionX(command.arguments[0]);
-        else if (command.name == "rotate")
-            world->getOpponent()->setGunRotation(command.arguments[0]);
-        else if (command.name == "fire")
-            world->getOpponent()->fire(command.arguments[0], command.arguments[1]);
-        else if (command.name == "gameOver")
-            over(false);
     }
 
     while (accumulator > ups)
     {
+        Command command;
+        if (networkManager->receive(command))
+        {
+            if (command.name == "move")
+                world->getOpponent()->setPositionX(command.arguments[0]);
+            else if (command.name == "rotate")
+                world->getOpponent()->setGunRotation(command.arguments[0]);
+            else if (command.name == "fire")
+                world->getOpponent()->fire(command.arguments[0], command.arguments[1]);
+            else if (command.name == "gameOver")
+                over(false);
+        }
+
         accumulator -= ups;
         world->updateAll(ups);
     }
@@ -133,8 +128,9 @@ void Game::over(bool localPlayerIsWinner)
 
 void Game::gameOver()
 {
+    mainWindow.clear(sf::Color::White);
+
     sf::Text text;
-    text.setCharacterSize(height / 20);
     text.setColor(sf::Color::Black);
 
     if (localPlayerIsWinner)
@@ -142,18 +138,27 @@ void Game::gameOver()
     else
         text.setString("Sorry, but you lose.");
 
-    LOG(INFO) << (std::string) text.getString();
+    sf::Font font;
 
-    text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height / 2);
-    text.setPosition(width / 2, height / 4);
+    if (!font.loadFromFile("arial.ttf"))
+    {
+        std::cout << static_cast<std::string> (text.getString());
+    } else
+    {
+        text.setFont(font);
+        text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height / 2);
+        text.setPosition(width / 2, height / 4);
 
-    mainWindow.draw(text);
+        mainWindow.draw(text);
+        mainWindow.display();
+    }
 
     sf::Event event;
+
     while (mainWindow.pollEvent(event))
     {
-        if (event.type == sf::Event::Closed || event.type == sf::Event::KeyPressed || event.type == sf::Event::MouseButtonPressed)
+        if (event.type == sf::Event::Closed || event.type == sf::Event::KeyPressed ||
+            event.type == sf::Event::MouseButtonPressed)
             mainWindow.close();
-        break;
     }
 }

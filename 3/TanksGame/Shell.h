@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Entity.h"
-#include "Tank.h"
 
 /**
  * @brief
@@ -27,7 +26,12 @@ public:
 
     bool isActive() const;
 
-    bool isCollide(Tank *player);
+    /**
+     * @brief collide
+     * @param player
+     * @return true if shell is collide with the player, false otherwise
+     */
+    bool isCollide(Entity *player);
 
     float getSpeed() const;
 
@@ -42,13 +46,13 @@ public:
 private:
     Shell(const Shell &shell);
 
+    void sendCommand();
+
     sf::CircleShape shape;
-    sf::CircleShape bangShape;
 
     float speed = 0;
     float angle = 0;
     float time = 0;
-
     float damageRadius = 0;
 
     float startX = 0;
@@ -56,7 +60,6 @@ private:
     unsigned int radius = 0;
 
     bool active = true;
-    bool bang = false;
 
     static constexpr float gravity = 9.8f;
 };

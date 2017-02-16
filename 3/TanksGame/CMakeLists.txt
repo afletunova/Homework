@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 11)
 
 set(SOURCE_FILES
         main.cpp Game.cpp Game.h Entity.cpp Entity.h GameWorld.cpp GameWorld.h Game.cpp Game.h KeyboardTank.cpp KeyboardTank.h Terrain.cpp Terrain.h KeyboardGun.cpp KeyboardGun.h Shell.cpp Shell.h NetworkManager.h Command.h ServerNetworkManager.cpp ServerNetworkManager.h NetworkManager.cpp ClientNetworkManager.cpp ClientNetworkManager.h RemoteTank.cpp RemoteTank.h RemoteGun.cpp RemoteGun.h
-        vendor/easylogging++.cc vendor/easylogging++.h Tank.cpp Tank.h Gun.cpp Gun.h)
+        vendor/easylogging++.cc vendor/easylogging++.h Explosion.cpp Explosion.h)
 set(RESOURCE_FILES image.png)
 add_executable(TanksGame ${SOURCE_FILES})
 
@@ -26,7 +26,7 @@ endif ()
 # Install target
 install(TARGETS TanksGame DESTINATION bin)
 
-set(RESOURCES tank.png gun.png)
+set(RESOURCES tank.png gun.png arial.ttf)
 
 foreach (resource IN LISTS RESOURCES)
     add_custom_command(

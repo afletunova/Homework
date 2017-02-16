@@ -2,10 +2,6 @@
 
 void NetworkManager::send(const Command &command)
 {
-    if (clock.getElapsedTime().asMilliseconds() < 100)
-        return;
-
-    clock.restart();
     sf::Packet packet;
     packet << sf::String(command.name);
     packet << command.argumentsCount;

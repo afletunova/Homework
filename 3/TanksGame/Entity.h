@@ -53,6 +53,7 @@ public:
 
 protected:
     sf::Sprite *getSprite() const;
+
     GameWorld *getWorld() const;
 
 private:

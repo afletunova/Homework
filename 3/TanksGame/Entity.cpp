@@ -6,9 +6,8 @@ Entity::Entity(GameWorld *world) : world(world), sprite(new sf::Sprite)
 void Entity::load(const std::string &filename)
 {
     if (!texture.loadFromFile(filename))
-    {
         return;
-    }
+
     sprite->setTexture(texture);
 }
 

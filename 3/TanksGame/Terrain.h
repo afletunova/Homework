@@ -5,6 +5,10 @@
 #include <array>
 #include "Entity.h"
 
+/**
+ * @brief The Terrain class
+ * Generates a random heights array and made a random terrain
+ */
 class Terrain : public Entity
 {
 public:
@@ -22,9 +26,9 @@ private:
 
     void generateHeights(int leftBorder, int rightBorder);
 
-    const unsigned int height = 300;
+    const unsigned int height = 250;
     unsigned int seed = 1;
-    const int percent = 30;
+    const int percent = 20;
     const int maxStep = 64;
 };
 

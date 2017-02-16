@@ -4,8 +4,10 @@
 #include <math.h>
 #include <algorithm>
 #include <stdlib.h>
+
 #include "Terrain.h"
 #include "Game.h"
+#include "vendor/easylogging++.h"
 
 void Terrain::draw(sf::RenderWindow &window)
 {
@@ -27,8 +29,9 @@ void Terrain::draw(sf::RenderWindow &window)
     window.draw(*getSprite());
 }
 
-Terrain::Terrain(GameWorld *world, int seed) : Entity(world), seed((unsigned int) seed)
+Terrain::Terrain(GameWorld *world, int seed) : Entity(world), seed((unsigned int) seed % 100)
 {
+    std::srand(this->seed);
     for (int i = 0; i < size; ++i)
         vertices[i] = height;
     generateHeights(0, size);
@@ -41,7 +44,6 @@ Terrain::Terrain(GameWorld *world, int seed) : Entity(world), seed((unsigned int
             sum += verticesCopy[i + j];
         vertices[i] = sum / 80;
     }
-    std::srand(seed);
 }
 
 void Terrain::generateHeights(int leftBorder, int rightBorder)
@@ -49,7 +51,9 @@ void Terrain::generateHeights(int leftBorder, int rightBorder)
     int middle = (leftBorder + rightBorder) / 2;
     double coefficient = 1;
 
-    if (std::rand() % 2 == 1)
+    int randomNumber = std::rand() % 100;
+
+    if (randomNumber % 2 == 1)
     {
         int middleHeight = vertices[middle] -= round(vertices[middle] * percent / 100);
         coefficient = (vertices[leftBorder] - middleHeight) * 1000 / (middle - leftBorder);

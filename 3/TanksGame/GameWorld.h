@@ -8,6 +8,7 @@
 #include "Terrain.h"
 #include "NetworkManager.h"
 #include "RemoteTank.h"
+#include "Explosion.h"
 
 class Game;
 
@@ -48,6 +49,8 @@ public:
 
     void addShell(Shell *shell);
 
+    void addExplosion(Explosion *explosion);
+
     void setOnServer(bool isServer);
 
     sf::RenderWindow *getWindow();
@@ -68,6 +71,8 @@ public:
 
 private:
     std::vector<Shell *> shells;
+    std::vector<Explosion *> explosions;
+
     const std::vector<Shell *> shellPrototypes;
     KeyboardTank *me;
     RemoteTank *opponent;

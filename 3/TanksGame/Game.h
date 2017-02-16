@@ -41,6 +41,7 @@ private:
      * It implements game loop: update all object and draw it
      */
     void gameLoop();
+
     void gameOver();
 
     sf::Clock clock;

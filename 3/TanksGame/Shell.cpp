@@ -1,18 +1,13 @@
 #include <cmath>
 #include <math.h>
 
+#include "Shell.h"
 #include "vendor/easylogging++.h"
 #include "Game.h"
-#include "Tank.h"
 
 void Shell::draw(sf::RenderWindow &window)
 {
     window.draw(shape, getSprite()->getTransform());
-    if (bang)
-    {
-        window.draw(bangShape);
-        bang = false;
-    }
 }
 
 void Shell::update(float elapsedTime)
@@ -23,25 +18,20 @@ void Shell::update(float elapsedTime)
     setPosition(startX + x, startY + y);
 
     if ((this->getPositionX() < 0 || this->getPositionX() > Game::width
-            || this->getPositionY() > getWorld()->getTerrain()->getHeightAt((int) this->getPositionX())) && active)
+         || this->getPositionY() > getWorld()->getTerrain()->getHeightAt((int) this->getPositionX())) && active)
     {
+        getWorld()->addExplosion(new Explosion(getWorld(), getRadius(), this->getPositionX(), this->getPositionY()));
         active = false;
-        bang = true;
-        bangShape.setPosition(this->getPositionX(), this->getPositionY());
-        bangShape.setFillColor(sf::Color::Black);
-        bangShape.setRadius(this->getDamageRadius());
     }
 
-    bool collide = this->isCollide(getWorld()->getOpponent());
+    bool collideWithOpponent = this->isCollide(getWorld()->getOpponent());
+    bool collideWithSelf = this->isCollide(getWorld()->getPlayer());
 
-    if (collide)
+    if (collideWithOpponent && time > 1)
     {
+        getWorld()->addExplosion(new Explosion(getWorld(), getRadius(), this->getPositionX(), this->getPositionY()));
         active = false;
-        Command command;
-        command.name = "gameOver";
-        command.argumentsCount = 0;
-        command.arguments = new int[command.argumentsCount];
-        getWorld()->getNetworkManager()->send(command);
+        sendCommand();
         getWorld()->getGame()->over(true);
     }
 }
@@ -72,9 +62,10 @@ void Shell::setPosition(const float x, const float y)
 }
 
 Shell::Shell(GameWorld *world, float speed, unsigned int radius, float damageRadius) : Entity(world),
-                                                                   speed(speed),
-                                                                   radius(radius),
-                                                                   shape(radius), damageRadius(damageRadius)
+                                                                                       speed(speed),
+                                                                                       radius(radius),
+                                                                                       shape(radius),
+                                                                                       damageRadius(damageRadius)
 {
     shape.setFillColor(sf::Color::Black);
     shape.setOrigin(radius / 2, radius / 2);
@@ -93,14 +84,14 @@ bool Shell::isActive() const
     return active;
 }
 
-bool Shell::isCollide(Tank *player)
+bool Shell::isCollide(Entity *player)
 {
     if (!isActive())
         return false;
 
     int deltaX = (int) (this->getPositionX() - player->getPositionX());
-    int deltaY = (int) (this->getPositionY() - (player->getPositionY() - player->getSpriteRadius()));
-    int delta = (int) (player->getSpriteRadius() + getDamageRadius());
+    int deltaY = (int) (this->getPositionY() - (player->getPositionY() - KeyboardTank::spriteRadius));
+    int delta = (int) (KeyboardTank::spriteRadius + getDamageRadius());
 
     return deltaX * deltaX + deltaY * deltaY < delta * delta;
 }
@@ -108,4 +99,13 @@ bool Shell::isCollide(Tank *player)
 float Shell::getDamageRadius() const
 {
     return damageRadius;
+}
+
+void Shell::sendCommand()
+{
+    Command command;
+    command.name = "gameOver";
+    command.argumentsCount = 0;
+    command.arguments = new int[command.argumentsCount];
+    getWorld()->getNetworkManager()->send(command);
 }

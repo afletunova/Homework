@@ -2,7 +2,6 @@
 
 #include "Entity.h"
 #include "KeyboardGun.h"
-#include "Tank.h"
 
 /**
  * @brief The KeyboardTank class
@@ -10,10 +9,12 @@
  * It is responsible for updating and sending updates
  */
 
-class KeyboardTank : public Tank
+class KeyboardTank : public Entity
 {
 public:
     KeyboardTank(GameWorld *world);
+
+    ~KeyboardTank();
 
     /**
      * @brief update
@@ -25,9 +26,10 @@ public:
 
     void draw(sf::RenderWindow &window) override;
 
+    static const int spriteRadius = 45;
+
 private:
     const float speed = 150;
-    const float gunHeight = 75;
     static const int updatePackageInterval = 70;
 
     sf::Clock sendUpdatePackageClock;

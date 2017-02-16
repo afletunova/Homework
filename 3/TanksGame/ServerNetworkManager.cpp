@@ -2,7 +2,6 @@
 #include <SFML/Network.hpp>
 #include <iostream>
 
-
 void ServerNetworkManager::start(int port)
 {
     sf::TcpListener listener;

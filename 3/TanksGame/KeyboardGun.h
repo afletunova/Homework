@@ -8,7 +8,7 @@
  * It implements the gun of the local player and
  * it is responsible for updating and sending update information of gun rotation and fire
  */
-class KeyboardGun : public Gun
+class KeyboardGun : public Entity
 {
 public:
     KeyboardGun(GameWorld *world);
@@ -23,11 +23,14 @@ public:
      */
     void update(float x, float y);
 
+    float getHeight();
+
 private:
     const float startAngle = 270;
     const float angle = 5;
     const float maxAngle = 360;
     const float minAngle = 180;
+    const float height = 75;
     const int reloadTimeMS = 600;
     const int updatePackageInterval = 150;
 
