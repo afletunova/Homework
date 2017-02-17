@@ -103,9 +103,6 @@ float Shell::getDamageRadius() const
 
 void Shell::sendCommand()
 {
-    Command command;
-    command.name = "gameOver";
-    command.argumentsCount = 0;
-    command.arguments = new int[command.argumentsCount];
+    Command command("gameOver", 0);
     getWorld()->getNetworkManager()->send(command);
 }

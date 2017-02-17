@@ -11,7 +11,6 @@ class NetworkManager
 {
 public:
     virtual ~NetworkManager();
-
     /**
      * @brief
      * Sends command to the opponent by the network
@@ -29,7 +28,6 @@ public:
 
 protected:
     sf::TcpSocket *getSocket() const;
-
     void setSocket(sf::TcpSocket *socket);
 
 private:

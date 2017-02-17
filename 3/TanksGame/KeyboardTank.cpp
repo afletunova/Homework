@@ -39,11 +39,8 @@ void KeyboardTank::update(float elapsedTime)
 
     if (direction != 0 || sendUpdatePackageClock.getElapsedTime().asMilliseconds() >= updatePackageInterval)
     {
-        Command command;
-        command.name = "move";
-        command.argumentsCount = 1;
-        command.arguments = new int[1];
-        command.arguments[0] = (int) getSprite()->getPosition().x;
+        Command command("move", 1);
+        command.addArgument((int) getSprite()->getPosition().x, 0);
         if (sendUpdatePackageClock.getElapsedTime().asMilliseconds() >= updatePackageInterval)
         {
             getWorld()->getNetworkManager()->send(command);

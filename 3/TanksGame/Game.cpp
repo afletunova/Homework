@@ -21,23 +21,22 @@ void Game::start()
     RemoteTank *opponent = new RemoteTank(world);
 
     Terrain *terrain;
-    Command command;
     if (isOnServer())
     {
         int seed = (int) time(NULL);
         terrain = new Terrain(world, seed);
-        command.name = "terrain";
-        command.argumentsCount = 1;
-        command.arguments = new int[command.argumentsCount];
-        command.arguments[0] = seed;
+        Command command("terrain", 1);
+        command.addArgument(seed, 0);
+
         networkManager->send(command);
     } else
     {
-        while (!networkManager->receive(command) || command.name != "terrain")
+        Command command;
+        while (!networkManager->receive(command) || command.getName() != "terrain")
         {
             sf::sleep(sf::seconds(1.0f / fps));
         }
-        terrain = new Terrain(world, command.arguments[0]);
+        terrain = new Terrain(world, command.getArgument(0));
     }
 
     world->setOnServer(isOnServer());
@@ -88,13 +87,13 @@ void Game::gameLoop()
         Command command;
         if (networkManager->receive(command))
         {
-            if (command.name == "move")
-                world->getOpponent()->setPositionX(command.arguments[0]);
-            else if (command.name == "rotate")
-                world->getOpponent()->setGunRotation(command.arguments[0]);
-            else if (command.name == "fire")
-                world->getOpponent()->fire(command.arguments[0], command.arguments[1]);
-            else if (command.name == "gameOver")
+            if (command.getName() == "move")
+                world->getOpponent()->setPositionX(command.getArgument(0));
+            else if (command.getName() == "rotate")
+                world->getOpponent()->setGunRotation(command.getArgument(0));
+            else if (command.getName() == "fire")
+                world->getOpponent()->fire(command.getArgument(0), command.getArgument(1));
+            else if (command.getName() == "gameOver")
                 over(false);
         }
 

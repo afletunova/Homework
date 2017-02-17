@@ -46,11 +46,8 @@ void KeyboardGun::update(float x, float y)
 
     if (direction != 0 || sendUpdatePackageClock.getElapsedTime().asMilliseconds() >= updatePackageInterval * 2)
     {
-        Command command;
-        command.name = "rotate";
-        command.argumentsCount = 1;
-        command.arguments = new int[command.argumentsCount];
-        command.arguments[0] = (int) getSprite()->getRotation();
+        Command command("rotate", 1);
+        command.addArgument((int) getSprite()->getRotation(), 0);
         if (sendUpdatePackageClock.getElapsedTime().asMilliseconds() >= updatePackageInterval)
         {
             getWorld()->getNetworkManager()->send(command);
@@ -70,12 +67,9 @@ void KeyboardGun::fire()
     shell->setPosition(position.x, position.y);
     getWorld()->addShell(shell);
 
-    Command command;
-    command.name = "fire";
-    command.argumentsCount = 2;
-    command.arguments = new int[command.argumentsCount];
-    command.arguments[0] = (int) getSprite()->getRotation();
-    command.arguments[1] = shellIndex;
+    Command command("fire", 2);
+    command.addArgument((int) getSprite()->getRotation(), 0);
+    command.addArgument(shellIndex, 1);
 
     getWorld()->getNetworkManager()->send(command);
 }
